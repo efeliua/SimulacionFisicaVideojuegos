@@ -1,12 +1,25 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel)
+Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Ac, float Mass, float Dam)
 {
 	vel = Vel;
 	pose = physx::PxTransform(Pos);
+	damping = Dam;
+	ac = Ac;
+	mass = Mass;
+	shape = CreateShape(physx::PxSphereGeometry(0.2));
+	color = Vector4(120, 050, 060, 1);
+	renderItem = new RenderItem(shape, &pose, color);
+}
 
-	shape = CreateShape(physx::PxSphereGeometry(5));
-	color = Vector4(120, 050, 060, 0);
+Particle::Particle(Vector3 Pos)
+{
+	vel = Vector3(0, 0, 0);
+	ac = Vector3(0, 0, 0);
+	damping = 0.998f;
+	pose = physx::PxTransform(Pos);
+	shape = CreateShape(physx::PxSphereGeometry(0.2));
+	color = Vector4(120, 050, 060, 1);
 	renderItem = new RenderItem(shape, &pose, color);
 }
 
@@ -17,6 +30,12 @@ Particle::~Particle()
 
 void Particle::integrate(double t)
 {
-	//damping, blablabla
-	pose.p+= vel*t;
+	//update position
+	pose.p += vel * t;
+	//update linear velocity
+	vel += ac * t;
+	//impose damping
+	vel *= powf(damping, t);
+
+	//si se requiere posteriormente, borrar una vez ha alcanzado x altura/ velocidad
 }
