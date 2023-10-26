@@ -3,7 +3,12 @@
 GaussianParticleGenerator::GaussianParticleGenerator(std::string name, Particle* model, double _genprob, int maxpart, Vector3 _devpos, Vector3 _devvel, double _devt) : ParticleGenerator(name, model, _genprob, maxpart),
 std_dev_pos(_devpos), std_dev_vel(_devvel), std_dev_t(_devt) {
 	initialiseDs();
-};
+}
+GaussianParticleGenerator::~GaussianParticleGenerator()
+{
+	delete(posdx); delete(posdy); delete(posdz); delete(veldx); delete(veldy); delete(veldz);
+}
+;
 std::list<Particle*> GaussianParticleGenerator::generateParticles()
 {
 	//coge particula modelo
@@ -11,22 +16,21 @@ std::list<Particle*> GaussianParticleGenerator::generateParticles()
 	//los altera segun la funcion gaussiana (media, desv)
 	std::list<Particle*> ps;
 	int n=0;  //num d particulas a generar 
-	for (int i = 0; i < _num_particles; i++) { if ((rand() % 100) > _generator_probability) n++; } //Esto esta al reves
+	for (int i = 0; i < _num_particles; i++) { if ((rand() % 100) < _generator_probability) n++; } 
 	for (int i = 0; i < n; i++)
 	{
 		Vector3 newpos = Vector3((*posdx)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())), 
 			(*posdy)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())),
-			(*posdz)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())));         //here use normal distribution to change pos 
+			(*posdz)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())));        
 			
 		Vector3 newvel = Vector3((*veldx)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())),
 			(*veldy)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())),
 			(*veldz)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())));
-
-		if (_model->getGen()!=nullptr) { 
-			Firework* m = static_cast <Firework*> (_model);
-			ps.push_back(new Firework(newpos, newvel, Vector3(0, 0, 0),false, m->getGnumber(), m->getGen()));
-		}
-		else ps.push_back(new Particle(newpos, newvel, Vector3(0, 0, 0)));
+		
+		float newTime = (*td)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+		//ponemos las vel, pos modificadas segun la distr
+		Particle* newP = _model->clone(); newP->setPos(newpos); newP->setVel(newvel); newP->setTimeLife(newTime);
+		ps.push_back(newP);
 	}
 	
 	return ps;
@@ -44,4 +48,7 @@ void GaussianParticleGenerator::initialiseDs()
 	veldx = new std::normal_distribution<float>(_mean_vel.x, std_dev_vel.x);
 	veldy =new  std::normal_distribution<float>(_mean_vel.y, std_dev_vel.y);
 	veldz = new std::normal_distribution<float>(_mean_vel.z, std_dev_vel.z);
+
+	td = new std::normal_distribution<float>(_model->getTimeLife(), std_dev_t);
+
 }

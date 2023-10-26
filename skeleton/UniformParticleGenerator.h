@@ -9,7 +9,10 @@ protected:
 	Vector3 _vel_width;
 public:
 	UniformParticleGenerator(std::string name, Particle* model, double _genprob, int maxpart, Vector3 _posw, Vector3 _velw);
+	~UniformParticleGenerator();
 	virtual std::list<Particle*> generateParticles();
+
+	//distribuciones uniformes
 	std::uniform_real_distribution<double>* dposx;
 	std::uniform_real_distribution<double>* dposy;
 	std::uniform_real_distribution<double>* dposz;
@@ -18,9 +21,6 @@ public:
 	std::uniform_real_distribution<double>* dvely;
 	std::uniform_real_distribution<double>* dvelz;
 	
-	void initialiseDs();
-
-	
-
+	void initialiseDs(); //tambien se podría llamar para redefinir las distribuciones si se cambiara de modelo dentro de un mismo generador desde un setmodel
 };
 

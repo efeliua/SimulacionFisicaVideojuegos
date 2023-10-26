@@ -5,11 +5,10 @@ class FireworkGenerator;
 class Firework: public Particle
 {
 	protected:
-		 //el generador padre con el pool
-		int gen;
+		int gen; //generación
 	public: 
-		Firework(Vector3 Pos, Vector3 Vel, Vector3 Ac, bool model, int gen, ParticleGenerator* firegen) :Particle(Pos, Vel, Ac, model), gen(gen) { g = firegen; };
+		Firework(Vector4 color, float size, Vector3 Pos, Vector3 Vel, Vector3 Ac, float timeLife, bool model, int gen, ParticleGenerator* firegen) :Particle(color, size, Pos, Vel, Ac, timeLife, model), gen(gen) { g = firegen; };
 		virtual std::list<Particle*> onDeath();
-		inline int getGnumber() { return gen; }
+		virtual Particle* clone() override { return new Firework(color, size, pose.p, vel, ac, lifeTime, false, gen, g); }
 };
 

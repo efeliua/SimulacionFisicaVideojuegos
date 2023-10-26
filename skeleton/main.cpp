@@ -1,3 +1,4 @@
+//Eva Feliu Aréjola
 #include <ctype.h>
 
 #include <PxPhysicsAPI.h>
@@ -125,7 +126,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		particles.push_back(new Projectile(TANQUE));
 		break;
 	}
-	//case ' ':	break;
 	case ' ':
 	{
 		particles.push_back(new Projectile(BALA));
@@ -133,7 +133,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	case 'F':
 	{
-		psys->shoot();
+		psys->shoot(); //fireworks
 		break;
 	}
 	default:
