@@ -9,6 +9,7 @@
 #include "callbacks.hpp"
 #include "Particle.h"
 #include "Projectile.h"
+#include "ParticleSystem.h"
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -35,6 +36,9 @@ ContactReportCallback gContactReportCallback;
 std::vector<Particle*> particles;
 //a parametrizar para cada particula
 
+//particles system
+ParticleSystem* psys;
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -59,7 +63,11 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	//particle = new Particle(Vector3(0,0,0), Vector3(-10, -10, 0),Vector3(0,-generalGravity/4,0));
+	//particles.push_back(new Particle(Vector3(0,0,0), Vector3(0, 10, 0),Vector3(0,0,0)));
+	//particles.push_back(new Particle(Vector3(0, 0, 0), Vector3(10, 20, 0), Vector3(0, 0, 0)));
+
+	//sistema de particulas
+	psys = new ParticleSystem();
 	
 	}
 
@@ -77,6 +85,7 @@ void stepPhysics(bool interactive, double t)
 	{
 		particles[i]->integrate(t);
 	}
+	psys->update(t);
 }
 
 // Function to clean data
@@ -122,7 +131,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		particles.push_back(new Projectile(BALA));
 		break;
 	}
-
+	case 'F':
+	{
+		psys->shoot();
+		break;
+	}
 	default:
 		break;
 	}
