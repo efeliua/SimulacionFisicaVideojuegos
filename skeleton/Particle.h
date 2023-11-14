@@ -18,11 +18,16 @@ class Particle
 		virtual Particle* clone() { return new Particle(color, size, pose.p, vel, ac, lifeTime, false); };
 		inline Vector3 getPos() { return pose.p; }
 		inline Vector3 getVel() { return vel; } 
+		inline float getMass() { return mass; };
+		inline float getInvMass() { return massinv; }
 		virtual std::list<Particle*> onDeath() { std::list<Particle*> listavacia{};  return listavacia; };
 		inline void setPos(Vector3 v) { pose.p = v; }
 		inline void setVel(Vector3 v) { vel = v; }
 		inline void setTimeLife(float t) { remainingTime =lifeTime=t; }
 		inline float getTimeLife() { return lifeTime; }
+		//Fuerzas
+		inline void clearForce() { f *= 0; };
+		inline void addForce(const Vector3& force) { f += force; };
 	
 	protected:
 		RenderItem *renderItem;
@@ -37,5 +42,8 @@ class Particle
 		float lifeTime, remainingTime;
 		bool model;
 		ParticleGenerator* g;
+		//Fuerzas
+		float massinv;
+		Vector3 f; //acumulador de fuerzas
 };
 

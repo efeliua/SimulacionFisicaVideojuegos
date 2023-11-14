@@ -82,10 +82,10 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	for (int i = 0; i < particles.size(); ++i)
+	/*for (int i = 0; i < particles.size(); ++i)
 	{
 		particles[i]->integrate(t);
-	}
+	}*/
 	psys->update(t);
 }
 
