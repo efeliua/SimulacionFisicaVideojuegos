@@ -9,6 +9,7 @@ class ParticleGenerator
 		double _generator_probability; //constate, porcentaje de prob de que en que cada paso se genere una nueva particula
 		int _num_particles; //max particulas que puede generar
 		Particle* _model; //tipo de particula que se genera
+
 	public:
 		ParticleGenerator() {};
 		ParticleGenerator(std::string name, Particle* model, double _genprob, int maxpart) : _name(name), _model(model), _generator_probability(_genprob), _num_particles(maxpart) {};

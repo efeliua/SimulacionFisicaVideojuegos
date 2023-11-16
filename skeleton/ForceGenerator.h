@@ -3,6 +3,8 @@
 class ForceGenerator
 {
 public:
+	ForceGenerator() {};
+	ForceGenerator(double dur) : _duration(dur) {};
 	virtual void updateForce(Particle* particle, double time=0) = 0;
 	std::string _name; //para nada porque luego ya veras que no lo usare
 	double _t = 0.0;

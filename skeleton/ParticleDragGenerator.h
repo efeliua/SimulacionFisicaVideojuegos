@@ -4,14 +4,15 @@
 class ParticleDragGenerator:public ForceGenerator
 {
 	public: 
-		ParticleDragGenerator();
-		ParticleDragGenerator(const float k1, const float k2);
-		ParticleDragGenerator(const float k1, const float k2, Vector3 og, Vector3 area) : _k1(k1), _k2(k2), origin(og), space(area) {};
-
+		ParticleDragGenerator() {};
+		ParticleDragGenerator(const float k1, const float k2=0);
+		ParticleDragGenerator(const float k1, const float k2, Vector3 og, Vector3 area, Vector3 wvel) : _k1(k1), _k2(k2), origin(og), space(area), windvel(wvel) {};
+		
 		virtual void updateForce(Particle* particle, double t);
-		inline void setDrag(float k1, float k2) { _k1 = k1; _k2 = k2; };
-		inline float getk1() { return _k1; }
-		inline float getk2() { return _k2; }
+		//inline void setDrag(float k1, float k2) { _k1 = k1; _k2 = k2; };
+		//inline float getk1() { return _k1; }
+		//inline float getk2() { return _k2; }
+
 		inline bool isInside(Vector3 pos) {
 			return (pos.x < (origin.x + space.x / 2)) && (pos.x > (origin.x - space.x / 2) 
 				&& (pos.y < (origin.y + space.y / 2)) && (pos.y > (origin.y - space.y / 2))
@@ -22,5 +23,6 @@ protected:
 	float _k2; //coef for square velocity
 	Vector3 origin; //punto central del área de drag
 	Vector3 space; //width, height, depth
+	Vector3 windvel;
 };
 

@@ -136,6 +136,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		psys->shoot(); //fireworks
 		break;
 	}
+	case 'E':
+	{
+		psys->explode();
+		break;
+	}
 	default:
 		break;
 	}

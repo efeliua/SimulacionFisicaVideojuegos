@@ -51,10 +51,11 @@ void Particle::integrate(double t)
 	//update linear velocity
 	vel += ac * t;
 	//impose damping
-	vel *= powf(damping, t);*/
-
+	vel *= powf(damping, t);
+    */
 	//Fuerzas
 	// Get the accel considering the force accum
+	
 	Vector3 resulting_accel = f * massinv;
 	vel += resulting_accel * t; // Ex. 1.3 --> add acceleration
 	vel *= powf(damping, t); // Exercise 1.3 --> add damping

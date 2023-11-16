@@ -10,7 +10,7 @@ class Particle
 {
 	public: 
 		Particle(Vector3 Pos=Vector3{0,0,0});
-		Particle(Vector4 color, float size, Vector3 Pos = Vector3{0,0,0}, Vector3 Vel = Vector3{ 0,0,0 }, Vector3 Ac = Vector3{ 0,0,0 }, float timeLife=10, bool model = false, bool gravity = true, float Mass = 0, float Dam = 0.998f);
+		Particle(Vector4 color, float size, Vector3 Pos = Vector3{0,0,0}, Vector3 Vel = Vector3{ 0,0,0 }, Vector3 Ac = Vector3{ 0,0,0 }, float timeLife=10, bool model = false, bool gravity = true, float Mass = 1, float Dam = 0.998f);
 		virtual ~Particle(); // deregistrar el objeto RenderItem 
 		virtual void integrate(double t);
 		inline bool timeLeft() { return remainingTime > 0; }; 

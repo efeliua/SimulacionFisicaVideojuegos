@@ -6,10 +6,10 @@ namespace constants
 	//gen máxima
 	const int maxGen = 4;
 	//limites
-	const float limIz = -100;
-	const float limDc = 100;
-	const float limS = 100;
-	const float limIn = -100;
-	const float limC = -100;
-	const float limL = 100;
+	const float limIz = -1000;
+	const float limDc = 1000;
+	const float limS = 1000;
+	const float limIn = -1000;
+	const float limC = -1000;
+	const float limL = 1000;
 }
