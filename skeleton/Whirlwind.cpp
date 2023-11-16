@@ -1,7 +1,4 @@
 #include "Whirlwind.h"
-
-
-
 void Whirlwind::updateForce(Particle* particle, double t)
 {
 	//check that a particle has finite mass
@@ -14,6 +11,6 @@ void Whirlwind::updateForce(Particle* particle, double t)
 	{
 		//compute the wind velocity in that point 
 		windvel = _k*Vector3((-(p.z-origin.z)), (-(p.y-origin.y)), (p.x-origin.x));
-		ParticleDragGenerator::updateForce(particle, t); //cuando hay 8898 particulas da excepciomn -> dleete particle y no pude acceder
+		ParticleDragGenerator::updateForce(particle, t); 
 	}
 }

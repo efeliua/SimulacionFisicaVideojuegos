@@ -12,7 +12,7 @@ Particle::Particle(Vector3 Pos)
 	renderItem = new RenderItem(shape, &pose, color);
 	lifeTime =remainingTime = 10;
 	f = Vector3(0, 0, 0);
-
+	mass = 2; massinv = 1 / mass;
 }
 
 Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 Ac, float time, bool model, bool grav, float Mass, float Dam )
@@ -45,14 +45,6 @@ Particle::~Particle()
 
 void Particle::integrate(double t)
 {
-	/*
-	//update position
-	pose.p += vel * t;
-	//update linear velocity
-	vel += ac * t;
-	//impose damping
-	vel *= powf(damping, t);
-    */
 	//Fuerzas
 	// Get the accel considering the force accum
 	
@@ -60,11 +52,8 @@ void Particle::integrate(double t)
 	vel += resulting_accel * t; // Ex. 1.3 --> add acceleration
 	vel *= powf(damping, t); // Exercise 1.3 --> add damping
 	pose.p += vel * t;
-	//_remaining_time -= delta_t;  aqui en vez de void es bool y devuelve si esta viva o no, 
-	// que honestly es mucho mas inteligente que lo que estaba haciendo yo antes
 	// Clear accum
 	clearForce();
-
 
 	//disminuye tiempo por vivir
 	remainingTime -= t;

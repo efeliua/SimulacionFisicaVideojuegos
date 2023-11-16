@@ -15,7 +15,7 @@ class Particle
 		virtual void integrate(double t);
 		inline bool timeLeft() { return remainingTime > 0; }; 
 		inline bool insideBounds() { return (pose.p.x > constants::limIz && pose.p.x<constants::limDc && pose.p.y>constants::limIn && pose.p.y<constants::limS && pose.p.z>constants::limC && pose.p.z < constants::limL); };//create bounding box
-		virtual Particle* clone() { return new Particle(color, size, pose.p, vel, ac, lifeTime, false); };
+		virtual Particle* clone() { return new Particle(color, size, pose.p, vel, ac, lifeTime, false, true, mass); };
 		inline Vector3 getPos() { return pose.p; }
 		inline Vector3 getVel() { return vel; } 
 		inline float getMass() { return mass; };

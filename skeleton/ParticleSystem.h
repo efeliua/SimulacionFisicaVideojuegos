@@ -3,6 +3,8 @@
 #include "GaussianParticleGenerator.h"
 #include "FireworkGenerator.h"
 #include "ParticleForceRegistry.h"
+#include "Projectile.h"
+
 class ParticleSystem
 {
 protected:
@@ -22,5 +24,6 @@ public:
 	void addSingleForceGeneratorToAll(ForceGenerator* f);
 	void shoot();
 	void explode();
+	void shootProjectile(type t);
 };
 

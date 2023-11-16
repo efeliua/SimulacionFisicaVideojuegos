@@ -9,7 +9,6 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 #include "Particle.h"
-#include "Projectile.h"
 #include "ParticleSystem.h"
 #include <iostream>
 
@@ -63,11 +62,6 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-
-	//particles.push_back(new Particle(Vector3(0,0,0), Vector3(0, 10, 0),Vector3(0,0,0)));
-	//particles.push_back(new Particle(Vector3(0, 0, 0), Vector3(10, 20, 0), Vector3(0, 0, 0)));
-
-	//sistema de particulas
 	psys = new ParticleSystem();
 	
 	}
@@ -82,10 +76,6 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	/*for (int i = 0; i < particles.size(); ++i)
-	{
-		particles[i]->integrate(t);
-	}*/
 	psys->update(t);
 }
 
@@ -95,7 +85,7 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
-	for (int i = 0; i < particles.size(); ++i){delete(particles[i]);}
+	//for (int i = 0; i < particles.size(); ++i){delete(particles[i]);}
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -118,17 +108,17 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	case 'C':
 	{
-		particles.push_back(new Projectile(CANON));
+		psys->shootProjectile(CANON);
 		break;
 	}
 	case 'T': 
 	{
-		particles.push_back(new Projectile(TANQUE));
+		psys->shootProjectile(TANQUE);
 		break;
 	}
 	case ' ':
 	{
-		particles.push_back(new Projectile(BALA));
+		psys->shootProjectile(BALA);
 		break;
 	}
 	case 'F':
@@ -138,7 +128,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	case 'E':
 	{
-		psys->explode();
+		psys->explode(); //explosion force generator 
 		break;
 	}
 	default:
