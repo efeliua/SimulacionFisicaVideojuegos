@@ -25,5 +25,7 @@ public:
 	void shoot();
 	void explode();
 	void shootProjectile(type t);
+	void generatespringDemo();
+	void addK();
 };
 

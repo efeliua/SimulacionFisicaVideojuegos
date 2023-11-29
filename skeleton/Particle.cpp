@@ -1,26 +1,33 @@
 #include "Particle.h"
 #include "Constants.h"
 
-Particle::Particle(Vector3 Pos)
+Particle::Particle(Vector3 Pos, itemShape s)
 {
 	vel = Vector3(0, 0, 0);
 	ac = Vector3(0, 0, 0); 
 	damping = 0.998f;
 	pose = physx::PxTransform(Pos);
-	shape = CreateShape(physx::PxSphereGeometry(0.2));
+	addShape(shapeType, 0.2);
 	color = Vector4(120, 050, 060, 1);
 	renderItem = new RenderItem(shape, &pose, color);
 	lifeTime =remainingTime = 10;
 	f = Vector3(0, 0, 0);
 	mass = 2; massinv = 1 / mass;
+	shapeType = s;
+
 }
 
-Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 Ac, float time, bool model, bool grav, float Mass, float Dam )
+Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 Ac, float time, bool model, bool grav, float Mass, itemShape s, float Dam )
 {
 	//render
 	color = Color; 
 	size = Size;
-	if (!model) { shape = CreateShape(physx::PxSphereGeometry(size)); renderItem = new RenderItem(shape, &pose, color); }
+	shapeType = s;
+
+	if (!model) { 
+		addShape(s, size);
+	
+	renderItem = new RenderItem(shape, &pose, color); }
 
 	//transform/movement
 	pose = physx::PxTransform(pos);
@@ -57,5 +64,15 @@ void Particle::integrate(double t)
 
 	//disminuye tiempo por vivir
 	remainingTime -= t;
+}
+
+void Particle::addShape(itemShape s, float size)
+{
+	switch (s)
+	{
+	case SPHERE:  shape = CreateShape(physx::PxSphereGeometry(size));  break;
+	case BOX: physx::PxBoxGeometry box(Vector3(size, size, size));
+		shape = CreateShape(box); break;
+	}
 }
 

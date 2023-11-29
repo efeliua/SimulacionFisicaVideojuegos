@@ -1,10 +1,13 @@
 #pragma once
 #include "Particle.h"
+#include <string>
 class ForceGenerator
 {
 public:
 	ForceGenerator() {};
 	ForceGenerator(double dur) : _duration(dur) {};
+	inline void setName(std::string n) { _name = n; }
+	inline std::string getName() { return _name; }
 	virtual void updateForce(Particle* particle, double time=0) = 0;
 	std::string _name; 
 	double _t = 0.0;

@@ -7,11 +7,13 @@
 #include "ParticleDragGenerator.h"
 #include "Whirlwind.h"
 #include "Explosion.h"
-
-#define TORBELLINO
+#include "SpringForceGenerator.h"
+#include "AnchoredSpringFG.h"
+#include <iostream>
+//#define TORBELLINO
 //#define WIND
-#define GRAVITY
-#define PGENERATORS
+//#define GRAVITY
+//#define PGENERATORS
 //#define TESTPARTICLE
 //#define TESTPARTICLESTATIC
 
@@ -66,7 +68,7 @@ ParticleSystem::ParticleSystem()
 		force_generators.push_back(w);
 		addSingleForceGeneratorToAll(w);
 	#endif
-
+		generatespringDemo();
 }
 
 ParticleSystem::~ParticleSystem()
@@ -89,6 +91,7 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::update(double t)
 {
+	pfRegistry->updateForces(t); 
 	//for every particle lifetime, inside of bounds -> delete particles
 	//time update (forces), force update
 	for (auto it = particles.begin(); it != particles.end();)
@@ -125,7 +128,6 @@ void ParticleSystem::update(double t)
 			++it;
 		}
 	}
-	pfRegistry->updateForces(t); 
 }
 
 void ParticleSystem::shoot() //(fireworks)
@@ -157,6 +159,44 @@ void ParticleSystem::shootProjectile(type ty) //(new projectile)
 	for (ForceGenerator* g : force_generators)
 	{
 		pfRegistry->addRegistry(g, pj);
+	}
+}
+void ParticleSystem::generatespringDemo()
+{
+	/*
+	//First one standard spring uniting 2 particles
+	Particle* p1 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-10, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	Particle* p2 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(10, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	SpringForceGenerator* f1 = new SpringForceGenerator(1, 10, p2);
+	pfRegistry->addRegistry(f1, p1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
+	pfRegistry->addRegistry(f2, p2);
+	force_generators.push_back(f1);
+	force_generators.push_back(f2);
+	particles.push_back(p1);
+	particles.push_back(p2);
+	*/
+
+	//one w a fixed side 
+	Particle* p3 = new Particle(Vector4(0, 200, 0, 0), 0.2, Vector3(10, -20, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(1,1, 10, { 10.0,20.0,0.0 });
+	pfRegistry->addRegistry(f3, p3);
+	force_generators.push_back(f3);
+	particles.push_back(p3);
+	GravityForceGenerator* g = new GravityForceGenerator(Vector3(0, -9.8, 0));
+	force_generators.push_back(g);
+	pfRegistry->addRegistry(g, p3);
+	
+}
+void ParticleSystem::addK()
+{
+	for (auto e : force_generators) //sumamos a todo que sea o herede de spring force gen
+	{
+		if (e->getName() == "SpringForceGenerator")
+		{
+			SpringForceGenerator* s=static_cast <SpringForceGenerator*>(e);
+			s->addK(10); std::cout << "New value of springforceGenerators: " << s->getK() << std::endl;
+		}
 	}
 }
 void ParticleSystem::addSingleForceGeneratorToAll(ForceGenerator* f)

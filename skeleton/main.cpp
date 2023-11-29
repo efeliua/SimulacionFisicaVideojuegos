@@ -131,6 +131,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		psys->explode(); //explosion force generator 
 		break;
 	}
+	case 'K':
+	{
+		psys->addK();
+		break;
+	}
 	default:
 		break;
 	}
