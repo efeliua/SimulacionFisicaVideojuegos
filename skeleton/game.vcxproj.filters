@@ -28,6 +28,7 @@
     <ClCompile Include="AnchoredSpringFG.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="ParticleBungee.cpp" />
+    <ClCompile Include="ElasticSpringFG.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="AnchoredSpringFG.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="ParticleBungee.h" />
+    <ClInclude Include="ElasticSpringFG.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -256,6 +256,7 @@
     <ClCompile Include="AnchoredSpringFG.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="ElasticSpringFG.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Firework.cpp" />
     <ClCompile Include="FireworkGenerator.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="ElasticSpringFG.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="Firework.h" />
     <ClInclude Include="FireworkGenerator.h" />

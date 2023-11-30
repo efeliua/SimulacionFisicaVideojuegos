@@ -20,6 +20,10 @@ public:
 	void update(double t);
 	ParticleGenerator* getParticleGenerator(std::string name);
 	void generateFireworkSystem();
+	void generateFG();
+	void generateGS();
+	void generateTestStaticParticles();
+	void generateTestDynamicParticles();
 	void addForceGenerators(std::list <Particle*> p);
 	void addSingleForceGeneratorToAll(ForceGenerator* f);
 	void shoot();
@@ -27,5 +31,8 @@ public:
 	void shootProjectile(type t);
 	void generatespringDemo();
 	void addK();
+	void activateFG(std::string name);
+	void seeControls();
+	void createBriefWind();
 };
 

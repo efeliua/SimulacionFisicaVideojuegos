@@ -9,66 +9,29 @@
 #include "Explosion.h"
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
+#include "ElasticSpringFG.h"
+#include "BuoyancyForceGenerator.h"
 #include <iostream>
-//#define TORBELLINO
-//#define WIND
+#define TORBELLINO
+#define WIND
 //#define GRAVITY
-//#define PGENERATORS
+#define PGENERATORS
 //#define TESTPARTICLE
 //#define TESTPARTICLESTATIC
 
 ParticleSystem::ParticleSystem()
 {
-	//modelos ejemplo para los generadores (el último valor de estos constructor es la masa)
-	Particle *p = new Particle(Vector4(0,200,0,0), 0.2,Vector3(20,0,0),Vector3(0,30,0), Vector3(0,0,0),60, true, true, 1);
-	Particle* p2 = new Particle(Vector4(020, 040, 350, 708), 0.5, Vector3(-50, 0, 0), Vector3(0, 30, 0), Vector3(0, 0, 0),60, true, true, 1);
-
-	//particulas de prueba (dos hacia arriba, distinta masa), (cuatro sin velocidad inicial de distinta masa)
-	#ifdef TESTPARTICLE
-		Particle* p3 = new Particle(Vector4(020, 040, 350, 708),2, Vector3(-50, 20, 0), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, false, false, 10); //para los gens
-		Particle* p8 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(20, 20, 0), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, false, false, 5); //para los gens
-		particles.push_back(p3);
-		particles.push_back(p8);
-	#endif
-	
-	#ifdef TESTPARTICLESTATIC
-		Particle* p4 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(-25, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 10); //para los gens
-		Particle* p5 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(25, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 1000); //para los gens
-		Particle* p6 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(0, 25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 1); //para los gens
-		Particle* p7 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(0, -25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 100); //para los gens
-		particles.push_back(p7);
-		particles.push_back(p4);
-		particles.push_back(p5);
-		particles.push_back(p6);
-	#endif
-
-	//generadores 
-	#ifdef PGENERATORS
-		particles_generators.push_back(new GaussianParticleGenerator("fuente", p, 50, 4, Vector3(0.3,0.3,0.3), Vector3(1,0.5,0.5), 0.3)); 
-		particles_generators.push_back(new UniformParticleGenerator("uniforme", p2, 50, 3, Vector3(40, 10, 10), Vector3(5, 5, 5)));
-	#endif
-	fireGen = new FireworkGenerator(); //único generador de fireworks por sistema
-
+	std::cout << "Press i to see controls" << std::endl;
 	//reg fuerzas
 	pfRegistry = new ParticleForceRegistry();
-
-	//fuerzas
-	#ifdef GRAVITY
-		GravityForceGenerator *g=new GravityForceGenerator(Vector3(0, -9.8, 0));
-		force_generators.push_back(g);
-		addSingleForceGeneratorToAll(g);
-	#endif
-	#ifdef WIND
-		ParticleDragGenerator* dr = new ParticleDragGenerator(0.5, 0, Vector3(0,0,0), Vector3(350,350,350), Vector3(20,0,0));
-		force_generators.push_back(dr);
-		addSingleForceGeneratorToAll(dr);
-	#endif
-	#ifdef TORBELLINO
-		Whirlwind* w = new Whirlwind(1,0,Vector3(20, 20, 0), Vector3(350, 500, 350), Vector3(0,0,0), 0.5);
-		force_generators.push_back(w);
-		addSingleForceGeneratorToAll(w);
-	#endif
-		generatespringDemo();
+	
+	//generateGS();
+	//particulas ya en pantalla
+	generatespringDemo();
+	//generateTestDynamicParticles();
+	//generateTestStaticParticles();
+	//fuerzas que actuarán
+	generateFG();
 }
 
 ParticleSystem::~ParticleSystem()
@@ -135,13 +98,72 @@ void ParticleSystem::shoot() //(fireworks)
 	std::list<Particle*> ps =fireGen->generateParticles();
 	particles.splice(particles.end(), ps);
 }
+void ParticleSystem::generateFG() //de tiempo infinito, aplicadas a todas las particulas que vayan a existir
+{
+	//fuerzas
+	#ifdef GRAVITY
+		GravityForceGenerator* g = new GravityForceGenerator(Vector3(0, -9.8, 0));
+		force_generators.push_back(g);
+		addSingleForceGeneratorToAll(g);
+	#endif
+	#ifdef WIND
+		ParticleDragGenerator* dr = new ParticleDragGenerator(0.5, 0, Vector3(0, 0, 0), Vector3(350, 350, 350), Vector3(20, 0, 0));
+		force_generators.push_back(dr);
+		addSingleForceGeneratorToAll(dr);
+	#endif
+	#ifdef TORBELLINO
+		Whirlwind* w = new Whirlwind(1, 0, Vector3(20, 20, 0), Vector3(350, 500, 350), Vector3(0, 0, 0), 0.5);
+		force_generators.push_back(w);
+		addSingleForceGeneratorToAll(w);
+	#endif
+
+	fireGen = new FireworkGenerator(); //único generador de fireworks por sistema
+}
+void ParticleSystem::generateGS()
+{
+	//modelos ejemplo para los generadores (el último valor de estos constructor es la masa)
+	Particle* p = new Particle(Vector4(0, 200, 0, 0), 0.2, Vector3(20, 0, 0), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
+	Particle* p2 = new Particle(Vector4(020, 040, 350, 708), 0.5, Vector3(-50, 0, 0), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
+	//generadores 
+#ifdef PGENERATORS
+	particles_generators.push_back(new GaussianParticleGenerator("fuente", p, 50, 4, Vector3(0.3, 0.3, 0.3), Vector3(1, 0.5, 0.5), 0.3));
+	particles_generators.push_back(new UniformParticleGenerator("uniforme", p2, 50, 3, Vector3(40, 10, 10), Vector3(5, 5, 5)));
+#endif
+}
+void ParticleSystem::generateTestStaticParticles()
+{
+#ifdef TESTPARTICLESTATIC
+	Particle* p4 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(-25, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 10); //para los gens
+	Particle* p5 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(25, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 1000); //para los gens
+	Particle* p6 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(0, 25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 1); //para los gens
+	Particle* p7 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(0, -25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 100); //para los gens
+	particles.push_back(p7);
+	particles.push_back(p4);
+	particles.push_back(p5);
+	particles.push_back(p6);
+#endif
+}
+void ParticleSystem::generateTestDynamicParticles()
+{
+	//particulas de prueba (dos hacia arriba, distinta masa), (cuatro sin velocidad inicial de distinta masa)
+#ifdef TESTPARTICLE
+	Particle* p3 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(-50, 20, 0), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, false, false, 10); //para los gens
+	Particle* p8 = new Particle(Vector4(020, 040, 350, 708), 2, Vector3(20, 20, 0), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, false, false, 5); //para los gens
+	particles.push_back(p3);
+	particles.push_back(p8);
+#endif
+}
 void ParticleSystem::addForceGenerators(std::list <Particle*> p )
 {
 	for (auto it = p.begin(); it != p.end();)
 	{
 		for (auto ot = force_generators.begin(); ot != force_generators.end();)
 		{
-			pfRegistry->addRegistry(*ot, *it); ++ot;
+			std::string name = (*ot)->getName();
+			if ( name!= "springFG"&&name!="buoyancySFG") //comentar si se quisiera que afectara a todo dios
+			{
+				pfRegistry->addRegistry(*ot, *it); 
+			} ++ot;
 		}
 		++it; 
 	}
@@ -161,41 +183,98 @@ void ParticleSystem::shootProjectile(type ty) //(new projectile)
 		pfRegistry->addRegistry(g, pj);
 	}
 }
+void ParticleSystem::seeControls()
+{
+	std::cout << "Press WASD to move the camera" << std::endl;
+	std::cout << "To Activate/Deactivate Forces Press..." << std::endl;
+	std::cout << "G: gravity force" << std::endl;
+	std::cout << "V: drag force (wind)" << std::endl;
+	std::cout << "H: whirlwind force" << std::endl;
+	std::cout << "E: explosion force" << std::endl;
+	std::cout<<std::endl;
+
+}
+void ParticleSystem::createBriefWind()
+{
+	ParticleDragGenerator* dr = new ParticleDragGenerator(0.5, 0, Vector3(0, 0, 0), Vector3(350, 350, 350), Vector3(20, 0, 0), 6);
+	dr->activate();
+	force_generators.push_back(dr);
+	addSingleForceGeneratorToAll(dr);
+}
 void ParticleSystem::generatespringDemo()
 {
-	/*
+	
 	//First one standard spring uniting 2 particles
-	Particle* p1 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-10, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
-	Particle* p2 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(10, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
-	SpringForceGenerator* f1 = new SpringForceGenerator(1, 10, p2);
+	Particle* p1 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-50, -25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	Particle* p2 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-30, -25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	SpringForceGenerator* f1 = new SpringForceGenerator(10, 1, 20, p2);
 	pfRegistry->addRegistry(f1, p1);
-	SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(10, 1, 20, p1);
 	pfRegistry->addRegistry(f2, p2);
 	force_generators.push_back(f1);
 	force_generators.push_back(f2);
 	particles.push_back(p1);
 	particles.push_back(p2);
-	*/
+	
+	//two but theyre elastic
+	Particle* p4 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-50, 25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	Particle* p5 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-30, 25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	ElasticSpringFG* f4 = new ElasticSpringFG(10, 1, 20, p5);
+	pfRegistry->addRegistry(f4, p4);
+	ElasticSpringFG* f5 = new ElasticSpringFG(10, 1, 20, p4);
+	pfRegistry->addRegistry(f5, p5);
+	force_generators.push_back(f4);
+	force_generators.push_back(f5);
+	particles.push_back(p4);
+	particles.push_back(p5);
 
-	//one w a fixed side 
-	Particle* p3 = new Particle(Vector4(0, 200, 0, 0), 0.2, Vector3(10, -20, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
-	AnchoredSpringFG* f3 = new AnchoredSpringFG(1,1, 10, { 10.0,20.0,0.0 });
+	//one w a fixed side ---> anchored spring
+	Particle* p3 = new Particle(Vector4(0, 200, 0, 0), 0.2, Vector3(50, 10, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(100,1, 10, { 50.0,0.0,0.0 });
 	pfRegistry->addRegistry(f3, p3);
 	force_generators.push_back(f3);
 	particles.push_back(p3);
+
+	
+	//buoyancy
+	Particle* p6 = new Particle(Vector4(60, 0, 0, 0), 0, Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 200,BOX, Vector3(1,5,1), 0.86);
+	particles.push_back(p6);
+	Particle* p7 = new Particle(Vector4(60, 0, 60, 0), 0, Vector3(10, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 200, BOX, Vector3(1, 5, 1), 0.86);
+	particles.push_back(p7);
+
+	BuoyancyForceGenerator* b = new BuoyancyForceGenerator(1000, Vector3(0,0,0));
+	force_generators.push_back(b);
+	pfRegistry->addRegistry(b, p6);
+	pfRegistry->addRegistry(b, p7);
+
+	//solo añado gravedad aqui a las que me interesan
 	GravityForceGenerator* g = new GravityForceGenerator(Vector3(0, -9.8, 0));
 	force_generators.push_back(g);
 	pfRegistry->addRegistry(g, p3);
-	
+	pfRegistry->addRegistry(g, p6);
+	pfRegistry->addRegistry(g, p7);
+
 }
 void ParticleSystem::addK()
 {
 	for (auto e : force_generators) //sumamos a todo que sea o herede de spring force gen
 	{
-		if (e->getName() == "SpringForceGenerator")
+		if (e->getName()== "springFG")
 		{
 			SpringForceGenerator* s=static_cast <SpringForceGenerator*>(e);
 			s->addK(10); std::cout << "New value of springforceGenerators: " << s->getK() << std::endl;
+		}
+	}
+}
+void ParticleSystem::activateFG(std::string name)
+{
+	for (auto e : force_generators) //sumamos a todo que sea o herede de spring force gen
+	{
+		if (e->getName() == name)
+		{
+			bool aux=e->activate(); //or deactivate
+			if(aux) std::cout << name << " activated " << std::endl;
+			else std::cout << name << " deactivated " << std::endl;
 		}
 	}
 }

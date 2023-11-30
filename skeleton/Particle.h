@@ -11,7 +11,7 @@ class Particle
 {
 	public: 
 		Particle(Vector3 Pos=Vector3{0,0,0}, itemShape s=SPHERE);
-		Particle(Vector4 color, float size, Vector3 Pos = Vector3{0,0,0}, Vector3 Vel = Vector3{ 0,0,0 }, Vector3 Ac = Vector3{ 0,0,0 }, float timeLife=10, bool model = false, bool gravity = true, float Mass = 1, itemShape s=SPHERE, float Dam = 0.998f);
+		Particle(Vector4 color, float size, Vector3 Pos = Vector3{ 0,0,0 }, Vector3 Vel = Vector3{ 0,0,0 }, Vector3 Ac = Vector3{ 0,0,0 }, float timeLife = 10, bool model = false, bool gravity = true, float Mass = 1, itemShape s = SPHERE, Vector3 boxSize = Vector3{ 0,0,0 },float Dam = 0.998f);
 		virtual ~Particle(); // deregistrar el objeto RenderItem 
 		virtual void integrate(double t);
 		inline bool timeLeft() { return remainingTime > 0; }; 
@@ -20,16 +20,19 @@ class Particle
 		inline Vector3 getPos() { return pose.p; }
 		inline Vector3 getVel() { return vel; } 
 		inline float getMass() { return mass; };
+		inline float addMass(float m) { mass += m; }
 		inline float getInvMass() { return massinv; }
 		virtual std::list<Particle*> onDeath() { std::list<Particle*> listavacia{};  return listavacia; };
 		inline void setPos(Vector3 v) { pose.p = v; }
 		inline void setVel(Vector3 v) { vel = v; }
 		inline void setTimeLife(float t) { remainingTime =lifeTime=t; }
 		inline float getTimeLife() { return lifeTime; }
+		inline float getHeight() { return recSize.y; }
+		inline float getRecVolume() { return (recSize.x * recSize.y * recSize.z); }
 		//Fuerzas
 		inline void clearForce() { f *= 0; };
 		inline void addForce(const Vector3& force) { f += force; };
-		void addShape(itemShape s, float size);
+		void addShape(itemShape s, float size, Vector3 boxSize=Vector3{0,0,0});
 	protected:
 		RenderItem *renderItem;
 		physx::PxShape* shape;
@@ -47,5 +50,6 @@ class Particle
 		float massinv;
 		Vector3 f; //acumulador de fuerzas
 		itemShape shapeType;
+		Vector3 recSize;
 };
 

@@ -4,7 +4,7 @@ SpringForceGenerator::SpringForceGenerator(double t,double k, double resting_len
 	_k = k;
 	_resting_length = resting_length;
 	_other = other;
-	setName("SpringForceGenerator");
+	setName("springFG");
 }
 void SpringForceGenerator::updateForce(Particle* particle, double t)
 {

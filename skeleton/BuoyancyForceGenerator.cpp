@@ -2,10 +2,17 @@
 
 
 
-void BuoyancyForceGenerator::updateForce(Particle* particle)
+BuoyancyForceGenerator::BuoyancyForceGenerator(float d, Vector3 pos) : _liquid_density(d)
+{
+	_liquid_particle = new Particle(Vector4(0, 0, 060, 0), 0,pos, Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, false, 1, BOX, Vector3(20,0.5,5));
+	setName("buoyancySFG");
+}
+
+void BuoyancyForceGenerator::updateForce(Particle* particle, double t)
 {
 	float h = particle->getPos().y;
 	float h0 = _liquid_particle->getPos().y;
+	float _height = particle->getHeight(); //height of the particle
 
 	Vector3 f(0, 0, 0);
 	float immersed = 0.0;
@@ -21,6 +28,11 @@ void BuoyancyForceGenerator::updateForce(Particle* particle)
 		immersed = (h0 - h) / _height + 0.5;
 
 	}
-	f.y = _liquid_density * _volume * immersed * 9.8;
+	f.y = _liquid_density * particle->getRecVolume() * immersed * _gravity;
 	particle->addForce(f);
+}
+
+BuoyancyForceGenerator::~BuoyancyForceGenerator()
+{
+	delete _liquid_particle;
 }

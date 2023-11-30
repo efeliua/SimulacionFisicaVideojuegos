@@ -17,15 +17,19 @@ Particle::Particle(Vector3 Pos, itemShape s)
 
 }
 
-Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 Ac, float time, bool model, bool grav, float Mass, itemShape s, float Dam )
+Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 Ac, float time, bool model, bool grav, float Mass, itemShape s, Vector3 boxSize, float Dam )
 {
 	//render
 	color = Color; 
 	size = Size;
 	shapeType = s;
 
+	//tam
+	if (size != 0) { recSize = Vector3(0, 0, 0); }
+	else recSize = boxSize;
+
 	if (!model) { 
-		addShape(s, size);
+		addShape(s, size, boxSize);
 	
 	renderItem = new RenderItem(shape, &pose, color); }
 
@@ -66,12 +70,15 @@ void Particle::integrate(double t)
 	remainingTime -= t;
 }
 
-void Particle::addShape(itemShape s, float size)
+void Particle::addShape(itemShape s, float size, Vector3 boxSize)
 {
 	switch (s)
 	{
 	case SPHERE:  shape = CreateShape(physx::PxSphereGeometry(size));  break;
-	case BOX: physx::PxBoxGeometry box(Vector3(size, size, size));
+	case BOX: 
+		Vector3 s = Vector3(size, size, size);
+		if (size == 0) s = boxSize;
+		physx::PxBoxGeometry box(s);
 		shape = CreateShape(box); break;
 	}
 }

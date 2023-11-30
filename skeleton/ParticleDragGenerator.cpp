@@ -3,7 +3,7 @@
 void ParticleDragGenerator::updateForce(Particle* particle, double t)
 {
 	//check that a particle has finite mass
-	if (fabs(particle->getInvMass()) < 1e-10)
+	if ((!_active)||(fabs(particle->getInvMass()) < 1e-10))
 		return;
 	//checks if its in the area
 	

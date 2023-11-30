@@ -136,6 +136,29 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		psys->addK();
 		break;
 	}
+	case 'G':
+	{
+		psys->activateFG("gravFG");
+		break;
+	}
+	case 'H':
+	{
+		psys->activateFG("whirlwindFG"); break;
+	}
+	case 'V':
+	{
+		psys->activateFG("dragFG"); break;
+	}
+	case 'I':
+	{
+		psys->seeControls(); break;
+			break;
+	}
+	case 'B':
+	{
+		psys->createBriefWind(); break;
+	}
+
 	default:
 		break;
 	}
