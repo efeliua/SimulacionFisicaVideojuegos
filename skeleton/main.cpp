@@ -158,7 +158,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		psys->createBriefWind(); break;
 	}
-
+	case 'M':
+	{
+		psys->addMass();
+	}
 	default:
 		break;
 	}

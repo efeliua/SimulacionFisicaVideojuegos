@@ -25,7 +25,7 @@ Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 
 	shapeType = s;
 
 	//tam
-	if (size != 0) { recSize = Vector3(0, 0, 0); }
+	if (size != 0) { recSize = Vector3(size, size, size); }
 	else recSize = boxSize;
 
 	if (!model) { 

@@ -92,7 +92,11 @@ void ParticleSystem::update(double t)
 		}
 	}
 }
-
+void ParticleSystem::addMass()
+{
+	changeMassP->addMass(100);
+	std::cout << "The pink box new mass is " << changeMassP->getMass() << std::endl;
+}
 void ParticleSystem::shoot() //(fireworks)
 {
 	std::list<Particle*> ps =fireGen->generateParticles();
@@ -191,6 +195,7 @@ void ParticleSystem::seeControls()
 	std::cout << "V: drag force (wind)" << std::endl;
 	std::cout << "H: whirlwind force" << std::endl;
 	std::cout << "E: explosion force" << std::endl;
+	std::cout << "Press M to add mass to the floating pink box" << std::endl;
 	std::cout<<std::endl;
 
 }
@@ -237,22 +242,29 @@ void ParticleSystem::generatespringDemo()
 
 	
 	//buoyancy
-	Particle* p6 = new Particle(Vector4(60, 0, 0, 0), 0, Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 200,BOX, Vector3(1,5,1), 0.86);
+	Particle* p6 = new Particle(Vector4(60, 0, 0, 0), 0, Vector3(0, 10, 2), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1000,BOX, Vector3(1,5,1), 0.86);
 	particles.push_back(p6);
-	Particle* p7 = new Particle(Vector4(60, 0, 60, 0), 0, Vector3(10, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 200, BOX, Vector3(1, 5, 1), 0.86);
-	particles.push_back(p7);
+	changeMassP = new Particle(Vector4(60, 0, 60, 0), 0, Vector3(10, 10, 2), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 300, BOX, Vector3(1, 5, 1), 0.86);
+	particles.push_back(changeMassP);
+	Particle* p8 = new Particle(Vector4(0, 120, 60, 0), 0, Vector3(20, 10, 2), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 2000, BOX, Vector3(1, 5, 1), 0.86);
+	particles.push_back(p8);
+
 
 	BuoyancyForceGenerator* b = new BuoyancyForceGenerator(1000, Vector3(0,0,0));
 	force_generators.push_back(b);
 	pfRegistry->addRegistry(b, p6);
-	pfRegistry->addRegistry(b, p7);
+	pfRegistry->addRegistry(b, changeMassP);
+	pfRegistry->addRegistry(b, p8);
+
 
 	//solo añado gravedad aqui a las que me interesan
 	GravityForceGenerator* g = new GravityForceGenerator(Vector3(0, -9.8, 0));
 	force_generators.push_back(g);
 	pfRegistry->addRegistry(g, p3);
 	pfRegistry->addRegistry(g, p6);
-	pfRegistry->addRegistry(g, p7);
+	pfRegistry->addRegistry(g, changeMassP);
+	pfRegistry->addRegistry(g, p8);
+
 
 }
 void ParticleSystem::addK()

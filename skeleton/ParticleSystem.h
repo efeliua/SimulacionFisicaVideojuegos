@@ -13,6 +13,7 @@ protected:
 	std::list <ForceGenerator*> force_generators;
 	FireworkGenerator* fireGen;
 	ParticleForceRegistry* pfRegistry;
+	Particle* changeMassP;
 
 public:
 	ParticleSystem();
@@ -31,6 +32,7 @@ public:
 	void shootProjectile(type t);
 	void generatespringDemo();
 	void addK();
+	void addMass() ;
 	void activateFG(std::string name);
 	void seeControls();
 	void createBriefWind();

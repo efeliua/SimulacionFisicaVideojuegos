@@ -20,7 +20,7 @@ class Particle
 		inline Vector3 getPos() { return pose.p; }
 		inline Vector3 getVel() { return vel; } 
 		inline float getMass() { return mass; };
-		inline float addMass(float m) { mass += m; }
+		inline void addMass(float m) { mass += m; }
 		inline float getInvMass() { return massinv; }
 		virtual std::list<Particle*> onDeath() { std::list<Particle*> listavacia{};  return listavacia; };
 		inline void setPos(Vector3 v) { pose.p = v; }
