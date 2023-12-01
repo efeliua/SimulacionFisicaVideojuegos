@@ -15,7 +15,7 @@
 #define TORBELLINO
 #define WIND
 //#define GRAVITY
-#define PGENERATORS
+//#define PGENERATORS
 //#define TESTPARTICLE
 //#define TESTPARTICLESTATIC
 
@@ -25,7 +25,7 @@ ParticleSystem::ParticleSystem()
 	//reg fuerzas
 	pfRegistry = new ParticleForceRegistry();
 	
-	//generateGS();
+	generateGS();
 	//particulas ya en pantalla
 	generatespringDemo();
 	//generateTestDynamicParticles();
@@ -195,7 +195,10 @@ void ParticleSystem::seeControls()
 	std::cout << "V: drag force (wind)" << std::endl;
 	std::cout << "H: whirlwind force" << std::endl;
 	std::cout << "E: explosion force" << std::endl;
+	std::cout << "B: brief drag force (wind, 6 sec)" << std::endl;
 	std::cout << "Press M to add mass to the floating pink box" << std::endl;
+	std::cout << "Press K to increase the elastic constant of every spring force" << std::endl;
+
 	std::cout<<std::endl;
 
 }
@@ -208,13 +211,13 @@ void ParticleSystem::createBriefWind()
 }
 void ParticleSystem::generatespringDemo()
 {
-	
+	//(they have a limited time life of 60s)
 	//First one standard spring uniting 2 particles
 	Particle* p1 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-50, -25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
 	Particle* p2 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-30, -25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
-	SpringForceGenerator* f1 = new SpringForceGenerator(10, 1, 20, p2);
+	SpringForceGenerator* f1 = new SpringForceGenerator(20, 1, 10, p2);
 	pfRegistry->addRegistry(f1, p1);
-	SpringForceGenerator* f2 = new SpringForceGenerator(10, 1, 20, p1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(20, 1, 10, p1);
 	pfRegistry->addRegistry(f2, p2);
 	force_generators.push_back(f1);
 	force_generators.push_back(f2);
@@ -224,9 +227,9 @@ void ParticleSystem::generatespringDemo()
 	//two but theyre elastic
 	Particle* p4 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-50, 25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
 	Particle* p5 = new Particle(Vector4(0, 200, 0, 0), 1, Vector3(-30, 25, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1);
-	ElasticSpringFG* f4 = new ElasticSpringFG(10, 1, 20, p5);
+	ElasticSpringFG* f4 = new ElasticSpringFG(20, 1, 10, p5);
 	pfRegistry->addRegistry(f4, p4);
-	ElasticSpringFG* f5 = new ElasticSpringFG(10, 1, 20, p4);
+	ElasticSpringFG* f5 = new ElasticSpringFG(20, 1, 10, p4);
 	pfRegistry->addRegistry(f5, p5);
 	force_generators.push_back(f4);
 	force_generators.push_back(f5);

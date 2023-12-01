@@ -21,7 +21,7 @@ void BuoyancyForceGenerator::updateForce(Particle* particle, double t)
 	{
 		immersed = 0.0;
 	}
-	else if (h0 - h < _height * 0.5)
+	else if (h0 - h > _height * 0.5)
 	{ //totally immersed
 		immersed = 1.0;
 	}
