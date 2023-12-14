@@ -3,6 +3,6 @@
 class ParticleBungee: public SpringForceGenerator
 {
 public:
-	virtual void updateForce(Particle* particle, double t);
+	virtual void updateForce(Object* particle, double t);
 };
 

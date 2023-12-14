@@ -8,9 +8,9 @@ protected:
 	Vector3 _pos_width;
 	Vector3 _vel_width;
 public:
-	UniformParticleGenerator(std::string name, Particle* model, double _genprob, int maxpart, Vector3 _posw, Vector3 _velw);
+	UniformParticleGenerator(std::string name, Object* model, double _genprob, int maxpart, Vector3 _posw, Vector3 _velw);
 	~UniformParticleGenerator();
-	virtual std::list<Particle*> generateParticles();
+	virtual std::list<Object*> generateParticles();
 
 	//distribuciones uniformes
 	std::uniform_real_distribution<double>* dposx;

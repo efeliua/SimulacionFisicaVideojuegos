@@ -1,6 +1,6 @@
 #include "ParticleDragGenerator.h"
 
-void ParticleDragGenerator::updateForce(Particle* particle, double t)
+void ParticleDragGenerator::updateForce(Object* particle, double t)
 {
 	//check that a particle has finite mass
 	if ((!_active)||(fabs(particle->getInvMass()) < 1e-10))

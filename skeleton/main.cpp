@@ -12,7 +12,7 @@
 #include "ParticleSystem.h"
 #include <iostream>
 
-std::string display_text = "This is a test";
+std::string display_text = "PRACTICA5 5: SÓLIDO RÍGIDO";
 
 
 using namespace physx;
@@ -39,6 +39,10 @@ std::vector<Particle*> particles;
 //particles system
 ParticleSystem* psys;
 
+
+//vector de objetos en escena (no se si physx lo tiene ya)
+//std::vector <PxRigidDynamic> dinSolids; //A los que quiero que afecten fuerzas
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -56,14 +60,37 @@ void initPhysics(bool interactive)
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
+	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f); //grav def
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	psys = new ParticleSystem();
+	psys = new ParticleSystem(gScene, gPhysics);
+
+	//suelo
+		//generar
+	PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
+	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
+	Suelo->attachShape(*shape);
+	gScene->addActor(*Suelo);
+		//pintar
+	RenderItem* item;
+	item = new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 });
 	
+	//ejemplo de actor dinamico 
+	/*
+	PxRigidDynamic* new_solid;
+	new_solid = gPhysics->createRigidDynamic({ -70,200,70 });
+	new_solid->setLinearVelocity({ 0,5, 0 });
+	new_solid->setAngularVelocity({ 0,0,0 });
+	PxShape* shape_ad = CreateShape(PxBoxGeometry(5, 5, 5));
+	new_solid->attachShape(*shape_ad);
+	PxRigidBodyExt::updateMassAndInertia(*new_solid, 0.15);
+	gScene->addActor(*new_solid);
+	RenderItem* dynamic_item;
+	dynamic_item = new RenderItem(shape_ad, new_solid, { 0.8,0.8,0.8,1 });
+	*/
 	}
 
 
@@ -97,6 +124,8 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+
+	delete(psys);
 	}
 
 // Function called when a key is pressed

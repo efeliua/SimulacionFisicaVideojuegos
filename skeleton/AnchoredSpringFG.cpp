@@ -1,4 +1,5 @@
 #include "AnchoredSpringFG.h"
+#include "Particle.h"
 
 AnchoredSpringFG::AnchoredSpringFG(double t, double k, double resting, const Vector3& anchor_pos):SpringForceGenerator(t, k, resting, nullptr)
 {

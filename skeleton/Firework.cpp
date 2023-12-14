@@ -1,9 +1,9 @@
 #include "Firework.h"
 #include "GaussianParticleGenerator.h"
 #include "FireworkGenerator.h"
-std::list <Particle*> Firework::onDeath()
+std::list <Object*> Firework::onDeath()
 {
-	std::list<Particle*> newP{};
+	std::list<Object*> newP{};
 	if (gen < constants::maxGen) 
 	{
 		int maxp = 0;
@@ -17,7 +17,7 @@ std::list <Particle*> Firework::onDeath()
 		FireworkGenerator* f = static_cast<FireworkGenerator*> (g);
 		f->getModel(gen + 1)->setPos(pose.p);
 		GaussianParticleGenerator* p = new GaussianParticleGenerator("temp", f->getModel(gen + 1),100,maxp, Vector3(0.5, 0.5, 0.5), Vector3(7, 7, 7), 0.1);
-		newP=p->generateParticles();
+		//newP=p->generateParticles();
 		delete(p);
 	}
 		return newP;

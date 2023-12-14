@@ -1,6 +1,6 @@
 #include "GaussianParticleGenerator.h"
 #include "Firework.h"
-GaussianParticleGenerator::GaussianParticleGenerator(std::string name, Particle* model, double _genprob, int maxpart, Vector3 _devpos, Vector3 _devvel, double _devt) : ParticleGenerator(name, model, _genprob, maxpart),
+GaussianParticleGenerator::GaussianParticleGenerator(std::string name, Object* model, double _genprob, int maxpart, Vector3 _devpos, Vector3 _devvel, double _devt) : ParticleGenerator(name, model, _genprob, maxpart),
 std_dev_pos(_devpos), std_dev_vel(_devvel), std_dev_t(_devt) {
 	initialiseDs();
 }
@@ -9,12 +9,12 @@ GaussianParticleGenerator::~GaussianParticleGenerator()
 	delete(posdx); delete(posdy); delete(posdz); delete(veldx); delete(veldy); delete(veldz);
 }
 ;
-std::list<Particle*> GaussianParticleGenerator::generateParticles()
+std::list<Object*> GaussianParticleGenerator::generateParticles()
 {
 	//coge particula modelo
 	//y sus atributos
 	//los altera segun la funcion gaussiana (media, desv)
-	std::list<Particle*> ps;
+	std::list<Object*> ps;
 	int n=0;  //num d particulas a generar 
 	for (int i = 0; i < _num_particles; i++) { if ((rand() % 100) < _generator_probability) n++; } 
 	for (int i = 0; i < n; i++)
@@ -29,7 +29,7 @@ std::list<Particle*> GaussianParticleGenerator::generateParticles()
 		
 		float newTime = (*td)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 		//ponemos las vel, pos modificadas segun la distr
-		Particle* newP = _model->clone(); newP->setPos(newpos); newP->setVel(newvel); newP->setTimeLife(newTime);
+		Object* newP = _model->clone(); newP->setPos(newpos); newP->setVel(newvel); newP->setTimeLife(newTime);
 		ps.push_back(newP);
 	}
 	

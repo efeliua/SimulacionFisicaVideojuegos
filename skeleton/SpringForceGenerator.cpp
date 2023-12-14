@@ -1,12 +1,12 @@
 #include "SpringForceGenerator.h"
-SpringForceGenerator::SpringForceGenerator(double t,double k, double resting_length, Particle* other):ForceGenerator(t)
+SpringForceGenerator::SpringForceGenerator(double t,double k, double resting_length, Object* other):ForceGenerator(t)
 {
 	_k = k;
 	_resting_length = resting_length;
 	_other = other;
 	setName("springFG");
 }
-void SpringForceGenerator::updateForce(Particle* particle, double t)
+void SpringForceGenerator::updateForce(Object* particle, double t)
 {
 	//Particle is the particle to apply the force
 	Vector3 relative_pos_vector = _other->getPos() - particle->getPos(); //oosicion relativa respecto a la otra particula

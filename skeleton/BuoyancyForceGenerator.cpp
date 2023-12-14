@@ -1,5 +1,5 @@
 #include "BuoyancyForceGenerator.h"
-
+#include "Particle.h"
 
 
 BuoyancyForceGenerator::BuoyancyForceGenerator(float d, Vector3 pos) : _liquid_density(d)
@@ -8,7 +8,7 @@ BuoyancyForceGenerator::BuoyancyForceGenerator(float d, Vector3 pos) : _liquid_d
 	setName("buoyancySFG");
 }
 
-void BuoyancyForceGenerator::updateForce(Particle* particle, double t)
+void BuoyancyForceGenerator::updateForce(Object* particle, double t)
 {
 	float h = particle->getPos().y;
 	float h0 = _liquid_particle->getPos().y;

@@ -1,6 +1,6 @@
 #include "Explosion.h"
 #include <cmath>
-void Explosion::updateForce(Particle* particle, double time)
+void Explosion::updateForce(Object* particle, double time)
 {
 	//check that a particle has finite mass
 	if (fabs(particle->getInvMass()) < 1e-10)

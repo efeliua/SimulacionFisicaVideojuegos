@@ -13,12 +13,10 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
     <ClCompile Include="Firework.cpp" />
     <ClCompile Include="FireworkGenerator.cpp" />
-    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="ParticleForceRegistry.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="ParticleDragGenerator.cpp" />
@@ -29,6 +27,9 @@
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="ParticleBungee.cpp" />
     <ClCompile Include="ElasticSpringFG.cpp" />
+    <ClCompile Include="RigidSolidSystem.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -60,6 +61,9 @@
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="ParticleBungee.h" />
     <ClInclude Include="ElasticSpringFG.h" />
+    <ClInclude Include="RigidSolidSystem.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="RigidBody.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

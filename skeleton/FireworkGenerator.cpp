@@ -9,9 +9,9 @@ FireworkGenerator::FireworkGenerator(Vector3 pos)
 	firework_pool.push_back(new Firework(Vector4(120, 0, 050,0),0.1,pos, Vector3(0, 10, 0), Vector3(0, 0, 0), 0.075,true, 4, this));
 }
 
-std::list<Particle*> FireworkGenerator::generateParticles()
+std::list<Object*> FireworkGenerator::generateParticles()
 {
-	std::list<Particle*> ps;
+	std::list<Object*> ps;
 	ps.push_back(firework_pool[0]->clone()); //you gotta clone this probs pues si 
 	return ps;
 }

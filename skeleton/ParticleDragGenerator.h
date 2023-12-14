@@ -7,7 +7,7 @@ class ParticleDragGenerator:public ForceGenerator
 		ParticleDragGenerator() {};
 		ParticleDragGenerator( const float k1, const float k2, Vector3 og, Vector3 area, Vector3 wvel,double t= -1e10) : ForceGenerator(t),_k1(k1), _k2(k2), origin(og), space(area), windvel(wvel) { setName("dragFG"); };
 		
-		virtual void updateForce(Particle* particle, double t);
+		virtual void updateForce(Object* particle, double t);
 
 		inline bool isInside(Vector3 pos) {
 			return (pos.x < (origin.x + space.x / 2)) && (pos.x > (origin.x - space.x / 2) 

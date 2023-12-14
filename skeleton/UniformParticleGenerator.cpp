@@ -1,6 +1,6 @@
 #include "UniformParticleGenerator.h"
 
-UniformParticleGenerator::UniformParticleGenerator(std::string name,Particle* model, double _genprob, int maxpart, Vector3 _posw, Vector3 _velw) : ParticleGenerator(name, model, _genprob, maxpart),
+UniformParticleGenerator::UniformParticleGenerator(std::string name,Object* model, double _genprob, int maxpart, Vector3 _posw, Vector3 _velw) : ParticleGenerator(name, model, _genprob, maxpart),
 _vel_width(_velw), _pos_width(_posw)
 {
 	initialiseDs();
@@ -9,9 +9,9 @@ UniformParticleGenerator::~UniformParticleGenerator()
 {
 	delete(dposx); delete(dposy); delete(dposz); delete(dvelx); delete(dvely); delete(dvelz);
 }
-std::list<Particle*> UniformParticleGenerator::generateParticles()
+std::list<Object*> UniformParticleGenerator::generateParticles()
 {
-	std::list<Particle*> ps;
+	std::list<Object*> ps;
 	int n = 0;  //num d particulas a generar 
 	for (int i = 0; i < _num_particles; i++) { if ((rand() % 100) < _generator_probability) n++; }
 	for (int i = 0; i < n; i++)
@@ -22,7 +22,7 @@ std::list<Particle*> UniformParticleGenerator::generateParticles()
 		float velx = (*dvelx)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 		float vely = (*dvely)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 		float velz = (*dvelz)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
-		Particle* newP = _model->clone(); newP->setPos(Vector3(posx, posy, posz)); newP->setVel(Vector3(velx, vely, velz));
+		Object* newP = _model->clone(); newP->setPos(Vector3(posx, posy, posz)); newP->setVel(Vector3(velx, vely, velz));
 		ps.push_back(newP);
 	}
 

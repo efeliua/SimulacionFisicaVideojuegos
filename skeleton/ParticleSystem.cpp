@@ -11,40 +11,45 @@
 #include "AnchoredSpringFG.h"
 #include "ElasticSpringFG.h"
 #include "BuoyancyForceGenerator.h"
+#include "RigidBody.h"
 #include <iostream>
 #define TORBELLINO
 #define WIND
 //#define GRAVITY
-//#define PGENERATORS
+#define PGENERATORS
 //#define TESTPARTICLE
 //#define TESTPARTICLESTATIC
 
-ParticleSystem::ParticleSystem()
+ParticleSystem::ParticleSystem(physx::PxScene* scene, physx::PxPhysics* p)
 {
 	std::cout << "Press i to see controls" << std::endl;
 	//reg fuerzas
 	pfRegistry = new ParticleForceRegistry();
-	
-	generateGS();
+	gScene = scene;
+	gPhysics = p;
+	//generateGS();
 	//particulas ya en pantalla
-	generatespringDemo();
+	//generatespringDemo();
 	//generateTestDynamicParticles();
 	//generateTestStaticParticles();
 	//fuerzas que actuarán
-	generateFG();
+	//generateFG();
+	//solido rigido
+	generateSolidScene();
+
 }
 
 ParticleSystem::~ParticleSystem()
 {
-	for (auto it = particles.begin(); it != particles.end();)
+	for (auto it = particles.begin(); it != particles.end();it++)
 	{
 		delete(*it);
 	}
-	for (auto it = particles_generators.begin(); it != particles_generators.end();)
+	for (auto it = particles_generators.begin(); it != particles_generators.end();it++)
 	{
 		delete(*it);
 	}
-	for (auto it = force_generators.begin(); it != force_generators.end();)
+	for (auto it = force_generators.begin(); it != force_generators.end();it++)
 	{
 		delete(*it);
 	}
@@ -59,14 +64,14 @@ void ParticleSystem::update(double t)
 	//time update (forces), force update
 	for (auto it = particles.begin(); it != particles.end();)
 	{
-		Particle* p = static_cast<Particle*>(*it); ++it;
+		Object* p = static_cast<Object*>(*it); ++it;
 		//comprueba que esté viva (dentro de límites y tiempo de vida)
 		if (p->timeLeft()&& p->insideBounds())
 		{
 			p->integrate(t);
 		}
 		else { 
-			std::list <Particle*> newP=p->onDeath(); //si es firework generará nuevas partículas a añadir
+			std::list <Object*> newP=p->onDeath(); //si es firework generará nuevas partículas a añadir
 			if (newP.size() != 0) { addForceGenerators(newP);  particles.splice(particles.end(), newP); }
 			particles.remove(p); pfRegistry->deleteParticleRegistry(p); delete(p); //borra la particula del mapa de fuerzas
 		}
@@ -74,7 +79,7 @@ void ParticleSystem::update(double t)
 	for (ParticleGenerator* g : particles_generators)
 	{
 		//integra las nuevas particulas a la lista, les añade fuerzas presentes en el sistema
-		std::list<Particle*> ps=g->generateParticles();
+		std::list<Object*> ps=g->generateParticles();
 		addForceGenerators(ps);
 		particles.splice(particles.end(), ps);
 	}
@@ -99,7 +104,7 @@ void ParticleSystem::addMass()
 }
 void ParticleSystem::shoot() //(fireworks)
 {
-	std::list<Particle*> ps =fireGen->generateParticles();
+	std::list<Object*> ps =fireGen->generateParticles();
 	particles.splice(particles.end(), ps);
 }
 void ParticleSystem::generateFG() //de tiempo infinito, aplicadas a todas las particulas que vayan a existir
@@ -157,7 +162,7 @@ void ParticleSystem::generateTestDynamicParticles()
 	particles.push_back(p8);
 #endif
 }
-void ParticleSystem::addForceGenerators(std::list <Particle*> p )
+void ParticleSystem::addForceGenerators(std::list <Object*> p )
 {
 	for (auto it = p.begin(); it != p.end();)
 	{
@@ -268,6 +273,17 @@ void ParticleSystem::generatespringDemo()
 	pfRegistry->addRegistry(g, changeMassP);
 	pfRegistry->addRegistry(g, p8);
 
+
+}
+void ParticleSystem::generateSolidScene()
+{
+	//generadores de solido rigido
+	//modelos ejemplo para los generadores (el último valor de estos constructor es la masa)
+	RigidBody* r1 = new RigidBody(gScene, gPhysics, Vector4(0, 200, 0, 0), 0.2, physx::PxTransform(Vector3(20, 10, 0)), Vector3(0, 30, 0), Vector3(0, 0, 0), 3, true, 0.15, BOX);
+	RigidBody* r2 = new RigidBody(gScene, gPhysics ,Vector4(0, 100, 50, 0), 0.4, physx::PxTransform(Vector3(-20, 10, 0)), Vector3(0, 30, 0), Vector3(0, 0, 0), 2, true, 1.5, BOX);
+	//generadores 
+	particles_generators.push_back(new GaussianParticleGenerator("fuente", r1, 50, 4, Vector3(0.3, 0.3, 0.3), Vector3(1, 0.5, 0.5), 0.3));
+	particles_generators.push_back(new UniformParticleGenerator("uniforme", r2, 50, 3, Vector3(40, 10, 10), Vector3(5, 5, 5)));
 
 }
 void ParticleSystem::addK()

@@ -51,7 +51,7 @@ Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 
 
 Particle::~Particle()
 {
-	renderItem->release();
+	if(!model)renderItem->release();
 }
 
 void Particle::integrate(double t)

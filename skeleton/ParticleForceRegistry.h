@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
 #include "ForceGenerator.h"
-typedef std::pair< Particle*,ForceGenerator*> FRPair;
-class ParticleForceRegistry : public std::multimap<Particle*,ForceGenerator* >
+typedef std::pair< Object*,ForceGenerator*> FRPair;
+class ParticleForceRegistry : public std::multimap<Object*,ForceGenerator* >
 {
 public:
 	ParticleForceRegistry() {};
@@ -13,8 +13,8 @@ public:
 			it->second->updateForce(it->first, duration);
 		}
 	}
-	inline void addRegistry(ForceGenerator* fg, Particle* p) { FRPair fp = { p,fg }; insert(fp); } //inserta sin orden
-	void deleteParticleRegistry(Particle* p) { this->erase(p); } 
+	inline void addRegistry(ForceGenerator* fg, Object* p) { FRPair fp = { p,fg }; insert(fp); } //inserta sin orden
+	void deleteParticleRegistry(Object* p) { this->erase(p); } 
 	void deleteForceRegistry(ForceGenerator* f);
 
 };

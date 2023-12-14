@@ -1,5 +1,5 @@
 #include "Whirlwind.h"
-void Whirlwind::updateForce(Particle* particle, double t)
+void Whirlwind::updateForce(Object* particle, double t)
 {
 	//check that a particle has finite mass
 	if ((!_active) || (fabs(particle->getInvMass()) < 1e-10))
