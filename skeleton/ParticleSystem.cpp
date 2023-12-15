@@ -15,28 +15,31 @@
 #include <iostream>
 #define TORBELLINO
 #define WIND
-//#define GRAVITY
+#define GRAVITY
 #define PGENERATORS
-//#define TESTPARTICLE
-//#define TESTPARTICLESTATIC
+#define TESTPARTICLE
+#define TESTPARTICLESTATIC
 
 ParticleSystem::ParticleSystem(physx::PxScene* scene, physx::PxPhysics* p)
 {
 	std::cout << "Press i to see controls" << std::endl;
 	//reg fuerzas
 	pfRegistry = new ParticleForceRegistry();
+	//escena de physx
 	gScene = scene;
 	gPhysics = p;
-	//generateGS();
-	//particulas ya en pantalla
-	//generatespringDemo();
-	//generateTestDynamicParticles();
-	//generateTestStaticParticles();
+	//generadores de partículas 
+		//generateGS();
+	//particulas para muestra de muelles/flotación 
+		//generatespringDemo();
+	//partículas ejemplo con velocidad inicial
+		//generateTestDynamicParticles();
+	//partículas ejemplo sin velocidad inicial, masas diferentes
+		//generateTestStaticParticles();
+	//escena de solido rigido-> generadores de sólido rígido
+		generateSolidScene();
 	//fuerzas que actuarán
-	//generateFG();
-	//solido rigido
-	generateSolidScene();
-
+		generateFG();
 }
 
 ParticleSystem::~ParticleSystem()
@@ -201,7 +204,7 @@ void ParticleSystem::seeControls()
 	std::cout << "H: whirlwind force" << std::endl;
 	std::cout << "E: explosion force" << std::endl;
 	std::cout << "B: brief drag force (wind, 6 sec)" << std::endl;
-	std::cout << "Press M to add mass to the floating pink box" << std::endl;
+	std::cout << "Press M to add mass to the floating pink box (spring scene)" << std::endl;
 	std::cout << "Press K to increase the elastic constant of every spring force" << std::endl;
 
 	std::cout<<std::endl;
@@ -249,7 +252,7 @@ void ParticleSystem::generatespringDemo()
 	particles.push_back(p3);
 
 	
-	//buoyancy
+	//buoyancy (three particles w different masses)
 	Particle* p6 = new Particle(Vector4(60, 0, 0, 0), 0, Vector3(0, 10, 2), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 1000,BOX, Vector3(1,5,1), 0.86);
 	particles.push_back(p6);
 	changeMassP = new Particle(Vector4(60, 0, 60, 0), 0, Vector3(10, 10, 2), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, true, 300, BOX, Vector3(1, 5, 1), 0.86);
@@ -278,13 +281,14 @@ void ParticleSystem::generatespringDemo()
 void ParticleSystem::generateSolidScene()
 {
 	//generadores de solido rigido
-	//modelos ejemplo para los generadores (el último valor de estos constructor es la masa)
-	RigidBody* r1 = new RigidBody(gScene, gPhysics, Vector4(0, 200, 0, 0), 0.2, physx::PxTransform(Vector3(20, 10, 0)), Vector3(0, 30, 0), Vector3(0, 0, 0), 3, true, 0.15, BOX);
-	RigidBody* r2 = new RigidBody(gScene, gPhysics ,Vector4(0, 100, 50, 0), 0.4, physx::PxTransform(Vector3(-20, 10, 0)), Vector3(0, 30, 0), Vector3(0, 0, 0), 2, true, 1.5, BOX);
-	//generadores 
-	particles_generators.push_back(new GaussianParticleGenerator("fuente", r1, 50, 4, Vector3(0.3, 0.3, 0.3), Vector3(1, 0.5, 0.5), 0.3));
-	particles_generators.push_back(new UniformParticleGenerator("uniforme", r2, 50, 3, Vector3(40, 10, 10), Vector3(5, 5, 5)));
+	//modelos ejemplo para los generadores 
+	RigidBody* r1 = new RigidBody(gScene, gPhysics, Vector4(0, 200, 0, 0), 0.2, physx::PxTransform(Vector3(20, 10, 0)), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, 0.15, BOX);
+	RigidBody* r2 = new RigidBody(gScene, gPhysics ,Vector4(0, 100, 50, 0), 0.4, physx::PxTransform(Vector3(-20, 10, 0)), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, 1.5, BOX);
+	//generadores (utimo valor es el numero de particulas que van a generar en su vida)
+	particles_generators.push_back(new GaussianParticleGenerator("fuente", r1, 50, 2, Vector3(0.3, 0.3, 0.3), Vector3(1, 0.5, 0.5), 0.3,50));
+	particles_generators.push_back(new UniformParticleGenerator("uniforme", r2, 50, 2, Vector3(40, 10, 10), Vector3(5, 5, 5),50));
 
+	/*A los objetos de tipo sólido rígido les afectan todas las fuerzas a medida que se activan*/
 }
 void ParticleSystem::addK()
 {

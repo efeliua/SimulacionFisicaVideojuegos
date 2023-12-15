@@ -4,8 +4,8 @@
 class RigidBody: public Object
 {
 public:
-	RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color, float size,physx::PxTransform Pos, Vector3 LinearVel, Vector3 AngularVel, float timeLife = 10, bool model = false, float Mass = 1, itemShape s = SPHERE, Vector3 boxSize = Vector3{ 0,0,0 }, float Dam = 0.998f);
-	RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color, float size, physx::PxTransform Pos, float timeLife = 10, bool model = false, float Mass = 1, itemShape s = SPHERE, Vector3 boxSize = Vector3{ 0,0,0 });
+	RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color, float size,physx::PxTransform Pos, Vector3 LinearVel, Vector3 AngularVel, float timeLife = 10, bool model = false, float Density = 0.15, itemShape s = SPHERE, Vector3 boxSize = Vector3{ 0,0,0 }, float Dam = 0.998f);
+	RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color, float size, physx::PxTransform Pos, float timeLife = 10, bool model = false,  itemShape s = SPHERE, Vector3 boxSize = Vector3{ 0,0,0 });
 	virtual ~RigidBody();
 	virtual void integrate(double t);
 	virtual inline bool insideBounds() { Vector3 pose = rigidB->getGlobalPose().p; return (pose.x > constants::limIz && pose.x<constants::limDc&& pose.y>constants::limIn && pose.y<constants::limS&& pose.z>constants::limC && pose.z < constants::limL); };//create bounding box

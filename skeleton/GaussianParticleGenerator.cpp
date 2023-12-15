@@ -1,6 +1,6 @@
 #include "GaussianParticleGenerator.h"
 #include "Firework.h"
-GaussianParticleGenerator::GaussianParticleGenerator(std::string name, Object* model, double _genprob, int maxpart, Vector3 _devpos, Vector3 _devvel, double _devt) : ParticleGenerator(name, model, _genprob, maxpart),
+GaussianParticleGenerator::GaussianParticleGenerator(std::string name, Object* model, double _genprob, int maxpart, Vector3 _devpos, Vector3 _devvel, double _devt, int maxTotal) : ParticleGenerator(name, model, _genprob, maxpart, maxTotal),
 std_dev_pos(_devpos), std_dev_vel(_devvel), std_dev_t(_devt) {
 	initialiseDs();
 }
@@ -17,6 +17,7 @@ std::list<Object*> GaussianParticleGenerator::generateParticles()
 	std::list<Object*> ps;
 	int n=0;  //num d particulas a generar 
 	for (int i = 0; i < _num_particles; i++) { if ((rand() % 100) < _generator_probability) n++; } 
+	if (_maxTotalParticles != 0 && _totalGeneratedParticles + n > _maxTotalParticles) { n = _maxTotalParticles - _totalGeneratedParticles; };
 	for (int i = 0; i < n; i++)
 	{
 		Vector3 newpos = Vector3((*posdx)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count())), 
@@ -32,7 +33,7 @@ std::list<Object*> GaussianParticleGenerator::generateParticles()
 		Object* newP = _model->clone(); newP->setPos(newpos); newP->setVel(newvel); newP->setTimeLife(newTime);
 		ps.push_back(newP);
 	}
-	
+	_totalGeneratedParticles += n;
 	return ps;
 }
 

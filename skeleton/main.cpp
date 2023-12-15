@@ -60,7 +60,7 @@ void initPhysics(bool interactive)
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f); //grav def
+	sceneDesc.gravity = PxVec3(0.0f, 0.0f, 0.0f); //grav def (a 0 para que no se duplique con la fuerza de gravedad definida en ParticleSystem)
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;

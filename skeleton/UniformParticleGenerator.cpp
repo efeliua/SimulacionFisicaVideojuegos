@@ -1,6 +1,6 @@
 #include "UniformParticleGenerator.h"
 
-UniformParticleGenerator::UniformParticleGenerator(std::string name,Object* model, double _genprob, int maxpart, Vector3 _posw, Vector3 _velw) : ParticleGenerator(name, model, _genprob, maxpart),
+UniformParticleGenerator::UniformParticleGenerator(std::string name,Object* model, double _genprob, int maxpart, Vector3 _posw, Vector3 _velw, int maxTotal) : ParticleGenerator(name, model, _genprob, maxpart, maxTotal),
 _vel_width(_velw), _pos_width(_posw)
 {
 	initialiseDs();
@@ -14,6 +14,7 @@ std::list<Object*> UniformParticleGenerator::generateParticles()
 	std::list<Object*> ps;
 	int n = 0;  //num d particulas a generar 
 	for (int i = 0; i < _num_particles; i++) { if ((rand() % 100) < _generator_probability) n++; }
+	if (_maxTotalParticles != 0 && _totalGeneratedParticles + n > _maxTotalParticles) { n = _maxTotalParticles - _totalGeneratedParticles; };
 	for (int i = 0; i < n; i++)
 	{
 		float posx = (*dposx)(std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
@@ -25,7 +26,7 @@ std::list<Object*> UniformParticleGenerator::generateParticles()
 		Object* newP = _model->clone(); newP->setPos(Vector3(posx, posy, posz)); newP->setVel(Vector3(velx, vely, velz));
 		ps.push_back(newP);
 	}
-
+	_totalGeneratedParticles += n;
 	return ps;
 }
 void UniformParticleGenerator::initialiseDs()

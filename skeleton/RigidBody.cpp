@@ -1,7 +1,7 @@
 #include "RigidBody.h"
 
 
-RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Color, float Size, physx::PxTransform Pos, Vector3 LinearVel, Vector3 AngularVel, float timeLife, bool model, float Mass, itemShape s, Vector3 boxSize, float Dam)
+RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Color, float Size, physx::PxTransform Pos, Vector3 LinearVel, Vector3 AngularVel, float timeLife, bool model, float Density, itemShape s, Vector3 boxSize, float Dam)
 {
 	//render
 	color = Color;
@@ -21,7 +21,7 @@ RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Colo
 	new_solid->setLinearVelocity(LinearVel);
 	new_solid->setAngularVelocity(AngularVel);
 	new_solid->setLinearDamping(Dam);
-	physx::PxRigidBodyExt::updateMassAndInertia(*new_solid, Mass);
+	physx::PxRigidBodyExt::updateMassAndInertia(*new_solid, Density);
 	
 	if (!model) {
 		addShape(s, size, boxSize);
@@ -35,7 +35,7 @@ RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Colo
 	remainingTime = lifeTime = timeLife;
 }
 
-RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Color, float Size, physx::PxTransform Pos, float timeLife, bool model, float Mass, itemShape s, Vector3 boxSize)
+RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Color, float Size, physx::PxTransform Pos, float timeLife, bool model, itemShape s, Vector3 boxSize)
 {
 	//render
 	color = Color;
@@ -68,14 +68,17 @@ RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Colo
 
 RigidBody::~RigidBody()
 {
+	if (renderItem!=nullptr) 
+	{ 
+		DeregisterRenderItem(renderItem); renderItem = nullptr; 
+	}
 	if (rigidB != NULL) {
-		gScene->removeActor(*rigidB); rigidB->release();
+		 rigidB->release();//gScene->removeActor(*rigidB);
 	}
 	else
 	{
-		gScene->removeActor(*rigidBstatic); rigidBstatic->release();
+		rigidBstatic->release();//gScene->removeActor(*rigidBstatic);
 	}
-	if (!model&&renderItem!=nullptr) { DeregisterRenderItem(renderItem); renderItem = nullptr; }
 }
 
 void RigidBody::integrate(double t)

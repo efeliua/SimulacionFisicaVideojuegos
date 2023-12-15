@@ -17,7 +17,7 @@ std::list <Object*> Firework::onDeath()
 		FireworkGenerator* f = static_cast<FireworkGenerator*> (g);
 		f->getModel(gen + 1)->setPos(pose.p);
 		GaussianParticleGenerator* p = new GaussianParticleGenerator("temp", f->getModel(gen + 1),100,maxp, Vector3(0.5, 0.5, 0.5), Vector3(7, 7, 7), 0.1);
-		//newP=p->generateParticles();
+		newP=p->generateParticles();
 		delete(p);
 	}
 		return newP;

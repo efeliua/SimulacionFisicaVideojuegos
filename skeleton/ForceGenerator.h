@@ -5,7 +5,7 @@ class ForceGenerator
 {
 public:
 	ForceGenerator() {};
-	ForceGenerator(double dur, bool active=false) : _duration(dur),_active(active)  {};
+	ForceGenerator(double dur, bool active = false) : _duration(dur), _active(active) { };
 	inline void setName(std::string n) { _name = n; }
 	inline std::string getName() { return _name; }
 	virtual void updateForce(Object* particle, double time=0) = 0;
