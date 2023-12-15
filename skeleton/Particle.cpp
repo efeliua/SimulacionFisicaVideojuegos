@@ -17,8 +17,9 @@ Particle::Particle(Vector3 Pos, itemShape s)
 
 }
 
-Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 Ac, float time, bool model, bool grav, float Mass, itemShape s, Vector3 boxSize, float Dam )
+Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 Ac, float time, bool Model, bool grav, float Mass, itemShape s, Vector3 boxSize, float Dam )
 {
+	model = Model;
 	//render
 	color = Color; 
 	size = Size;
@@ -38,7 +39,7 @@ Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 
 	vel = Vel;
 	ac = Ac;
 	damping = Dam;
-	//if (grav)ac.y += constants::generalGravity; //manual add gravity 
+	//if (grav)ac.y += constants::generalGravity; //manual add gravity práctica 1/2
 
 	mass = Mass; massinv = 1 / mass;
 
@@ -51,14 +52,13 @@ Particle::Particle(Vector4 Color, float Size, Vector3 pos, Vector3 Vel, Vector3 
 
 Particle::~Particle()
 {
-	if(!model)renderItem->release();
+	if (!model) DeregisterRenderItem(renderItem);
 }
 
 void Particle::integrate(double t)
 {
 	//Fuerzas
 	// Get the accel considering the force accum
-	
 	Vector3 resulting_accel = f * massinv;
 	vel += resulting_accel * t; // Ex. 1.3 --> add acceleration
 	vel *= powf(damping, t); // Exercise 1.3 --> add damping
@@ -78,7 +78,7 @@ void Particle::addShape(itemShape s, float size, Vector3 boxSize)
 	case BOX: 
 		Vector3 s = Vector3(size, size, size);
 		if (size == 0) s = boxSize;
-		physx::PxBoxGeometry box(s);
+		physx::PxBoxGeometry box(s/2);
 		shape = CreateShape(box); break;
 	}
 }

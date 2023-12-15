@@ -12,11 +12,9 @@ class Object
 {
 public:
 	Object() {};
-	Object(Vector4 color, float size, Vector3 Pos = Vector3{ 0,0,0 }, Vector3 Vel = Vector3{ 0,0,0 }, Vector3 Ac = Vector3{ 0,0,0 }, float timeLife = 10, bool model = false, bool gravity = true, float Mass = 1, itemShape s = SPHERE, Vector3 boxSize = Vector3{ 0,0,0 }, float Dam = 0.998f);
-
 	virtual ~Object() {};
 	virtual void integrate(double t) {};
-	virtual inline bool timeLeft() { return remainingTime > 0; }; //same
+	virtual inline bool timeLeft() { return remainingTime > 0; }; 
 	virtual inline bool insideBounds()=0;
 	virtual Object* clone()=0;
 	virtual inline Vector3 getPos()=0;
@@ -31,12 +29,11 @@ public:
 	virtual inline float getTimeLife() { return lifeTime; }
 	virtual inline float getHeight()=0;
 	virtual inline float getRecVolume() = 0;
-	//Fuerzas
 	virtual inline void clearForce()  { };
 	virtual inline void addForce(const Vector3& force) {};
 	virtual void addShape(itemShape s, float size, Vector3 boxSize = Vector3{ 0,0,0 }) {};
 protected:
-	RenderItem* renderItem;
+	RenderItem* renderItem=nullptr;
 	physx::PxShape* shape;
 	Vector4 color;
 	float lifeTime, remainingTime;

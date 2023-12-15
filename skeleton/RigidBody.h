@@ -15,18 +15,15 @@ public:
 	virtual inline float getMass() {return rigidB->getMass(); };
 	virtual inline float getInvMass() { return rigidB->getInvMass(); }
 	virtual std::list<Object*> onDeath() { std::list<Object*> listavacia{};  return listavacia; };
-	virtual inline void setPos(Vector3 v) { physx::PxTransform tr = rigidB->getGlobalPose();  tr.p = v;  rigidB->setGlobalPose(tr); }
+	virtual void setPos(Vector3 v);
 	virtual inline void setVel(Vector3 v) { rigidB->setLinearVelocity(v); }
 	virtual inline float getHeight() { return (rigidB->getWorldBounds().maximum.y - rigidB->getWorldBounds().minimum.y); }
 	virtual inline float getRecVolume() { Vector3 rec = rigidB->getWorldBounds().getDimensions(); return rec.x * rec.y * rec.z; }
-
-	//virtual inline void clearForce() {rigidB.clearForce(); };
-	//Fuerzas
-	virtual inline void addForce(const Vector3& force) { rigidB->addForce(force); };
+	virtual inline void addForce(const Vector3& force) { if (rigidB != NULL) rigidB->addForce(force); };
 	virtual void addShape(itemShape s, float size, Vector3 boxSize = Vector3{ 0,0,0 });
 protected:
 	physx::PxRigidDynamic* rigidB;
-	physx::PxRigidStatic* rigidBstatic;
+	physx::PxRigidStatic* rigidBstatic; 
 	physx::PxScene* gScene;
 	physx::PxPhysics* gPhysics;
 	float size;

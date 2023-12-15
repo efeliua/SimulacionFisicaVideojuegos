@@ -4,6 +4,10 @@
 std::list <Object*> Firework::onDeath()
 {
 	std::list<Object*> newP{};
+	if (!model)
+	{
+
+	
 	if (gen < constants::maxGen) 
 	{
 		int maxp = 0;
@@ -19,6 +23,6 @@ std::list <Object*> Firework::onDeath()
 		GaussianParticleGenerator* p = new GaussianParticleGenerator("temp", f->getModel(gen + 1),100,maxp, Vector3(0.5, 0.5, 0.5), Vector3(7, 7, 7), 0.1);
 		newP=p->generateParticles();
 		delete(p);
-	}
+	}}
 		return newP;
 }

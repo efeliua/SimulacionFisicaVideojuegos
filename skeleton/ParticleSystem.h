@@ -9,6 +9,7 @@ class ParticleSystem
 {
 protected:
 	std::list <Object*> particles;
+	std::list <Object*> modelParticles;
 	std::list <ParticleGenerator*> particles_generators;
 	std::list <ForceGenerator*> force_generators;
 	FireworkGenerator* fireGen;
@@ -39,5 +40,6 @@ public:
 	void activateFG(std::string name);
 	void seeControls();
 	void createBriefWind();
+	void createFloor();
 };
 

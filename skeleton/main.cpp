@@ -32,16 +32,8 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-//vector de particulas
-std::vector<Particle*> particles;
-//a parametrizar para cada particula
-
 //particles system
 ParticleSystem* psys;
-
-
-//vector de objetos en escena (no se si physx lo tiene ya)
-//std::vector <PxRigidDynamic> dinSolids; //A los que quiero que afecten fuerzas
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -68,29 +60,6 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 	psys = new ParticleSystem(gScene, gPhysics);
 
-	//suelo
-		//generar
-	PxRigidStatic* Suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
-	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
-	Suelo->attachShape(*shape);
-	gScene->addActor(*Suelo);
-		//pintar
-	RenderItem* item;
-	item = new RenderItem(shape, Suelo, { 0.8,0.8,0.8,1 });
-	
-	//ejemplo de actor dinamico 
-	/*
-	PxRigidDynamic* new_solid;
-	new_solid = gPhysics->createRigidDynamic({ -70,200,70 });
-	new_solid->setLinearVelocity({ 0,5, 0 });
-	new_solid->setAngularVelocity({ 0,0,0 });
-	PxShape* shape_ad = CreateShape(PxBoxGeometry(5, 5, 5));
-	new_solid->attachShape(*shape_ad);
-	PxRigidBodyExt::updateMassAndInertia(*new_solid, 0.15);
-	gScene->addActor(*new_solid);
-	RenderItem* dynamic_item;
-	dynamic_item = new RenderItem(shape_ad, new_solid, { 0.8,0.8,0.8,1 });
-	*/
 	}
 
 
@@ -103,7 +72,7 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	psys->update(t);
+	psys->update(t); //upadte sistema de objects
 }
 
 // Function to clean data
@@ -111,8 +80,7 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-
-	//for (int i = 0; i < particles.size(); ++i){delete(particles[i]);}
+	delete(psys);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -125,7 +93,6 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	delete(psys);
 	}
 
 // Function called when a key is pressed
@@ -135,21 +102,6 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	case 'C':
-	{
-		psys->shootProjectile(CANON);
-		break;
-	}
-	case 'T': 
-	{
-		psys->shootProjectile(TANQUE);
-		break;
-	}
-	case ' ':
-	{
-		psys->shootProjectile(BALA);
-		break;
-	}
 	case 'F':
 	{
 		psys->shoot(); //fireworks
