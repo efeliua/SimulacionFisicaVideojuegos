@@ -1,5 +1,5 @@
 #include "RigidBody.h"
-
+#include <iostream>
 //dynamic
 RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Color, float Size, physx::PxTransform Pos, Vector3 LinearVel, Vector3 AngularVel, float timeLife, bool Model, float Density, itemShape s, Vector3 boxSize, float Dam)
 {
@@ -23,17 +23,19 @@ RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Colo
 	new_solid->setLinearVelocity(LinearVel);
 	new_solid->setAngularVelocity(AngularVel);
 	new_solid->setLinearDamping(Dam);
-	physx::PxRigidBodyExt::updateMassAndInertia(*new_solid, Density);
 	
+
 	addShape(s, size, boxSize);
 	new_solid->attachShape(*shape);
 	if (!model) {
 		renderItem = new RenderItem(shape, new_solid, color);
 	}
 	gScene->addActor(*new_solid);
+	physx::PxRigidBodyExt::updateMassAndInertia(*new_solid, Density);
 	rigidB = new_solid;
 	rigidBstatic = nullptr;
-
+	
+	std::cout << rigidB->getMass() << std::endl;
 	//tiempo de vida
 	remainingTime = lifeTime = timeLife;
 }

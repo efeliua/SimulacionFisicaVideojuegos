@@ -10,10 +10,11 @@
 #include "callbacks.hpp"
 #include "Particle.h"
 #include "ParticleSystem.h"
+#include "Game.h"
 #include <iostream>
 
 std::string display_text = "PRACTICA5 5: SÓLIDO RÍGIDO";
-
+std::string points_text = "POINTS: ";
 
 using namespace physx;
 
@@ -32,8 +33,11 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-//particles system
+//particles system-> crear si se quiere 
 ParticleSystem* psys;
+
+//juego 
+Game* game;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -58,7 +62,9 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	psys = new ParticleSystem(gScene, gPhysics);
+	//crear si se quieren ver cosas
+	//psys = new ParticleSystem(gScene, gPhysics);
+	game = new Game(gScene, gPhysics);
 
 	}
 
@@ -72,7 +78,8 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	psys->update(t); //upadte sistema de objects
+	if(psys!=nullptr)psys->update(t); //si existiera un sistema manual de pruebas añadido (ahora mismo no existe)
+	if (game != nullptr)game->update(t);
 }
 
 // Function to clean data
@@ -80,7 +87,7 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-	delete(psys);
+	//delete(psys);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -100,51 +107,62 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
-	switch(toupper(key))
+	if (game == nullptr)  //show de generadores/fuerzas sin juego etc (p1-p5)
 	{
-	case 'F':
-	{
-		psys->shoot(); //fireworks
-		break;
+		switch(toupper(key))
+		{
+			case 'F':
+			{
+				psys->shoot(); //fireworks
+				break;
+			}
+			case 'E':
+			{
+				psys->explode(); //explosion force generator 
+				break;
+			}
+			case 'K':
+			{
+				psys->addK();
+				break;
+			}
+			case 'G':
+			{
+				psys->activateFG("gravFG");
+				break;
+			}
+			case 'H':
+			{
+				psys->activateFG("whirlwindFG"); break;
+			}
+			case 'V':
+			{
+				psys->activateFG("dragFG"); break;
+			}
+			case 'I':
+			{
+				psys->seeControls(); break;
+					break;
+			}
+			case 'B':
+			{
+				psys->createBriefWind(); break;
+			}
+			case 'M':
+			{
+				psys->addMass();
+			}
+			case ' ':
+			{
+				psys->shootProjectile(CANON);
+			}
+			default:
+				break;
+		}
 	}
-	case 'E':
+	else
 	{
-		psys->explode(); //explosion force generator 
-		break;
-	}
-	case 'K':
-	{
-		psys->addK();
-		break;
-	}
-	case 'G':
-	{
-		psys->activateFG("gravFG");
-		break;
-	}
-	case 'H':
-	{
-		psys->activateFG("whirlwindFG"); break;
-	}
-	case 'V':
-	{
-		psys->activateFG("dragFG"); break;
-	}
-	case 'I':
-	{
-		psys->seeControls(); break;
-			break;
-	}
-	case 'B':
-	{
-		psys->createBriefWind(); break;
-	}
-	case 'M':
-	{
-		psys->addMass();
-	}
-	default:
-		break;
+		game->keyPressed(key);
 	}
 }
 

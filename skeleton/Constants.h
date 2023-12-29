@@ -12,4 +12,12 @@ namespace constants
 	const float limIn = -1000;
 	const float limC = -1000;
 	const float limL = 1000;
+
+	//limites Bolo
+	const float limIzBo = -1000;
+	const float limDcBo = 1000;
+	const float limSBo = 1000;
+	const float limInBo = -10;
+	const float limCBo = -300;
+	const float limLBo = 1000;
 }

@@ -30,6 +30,11 @@
     <ClCompile Include="RigidSolidSystem.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="Bolo.cpp" />
+    <ClCompile Include="BallManager.cpp" />
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="BoloManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -64,6 +69,11 @@
     <ClInclude Include="RigidSolidSystem.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="Bolo.h" />
+    <ClInclude Include="BallManager.h" />
+    <ClInclude Include="Ball.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="BoloManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -12,6 +12,9 @@
 #include "ElasticSpringFG.h"
 #include "BuoyancyForceGenerator.h"
 #include "RigidBody.h"
+
+//bolos
+#include "Bolo.h"
 #include <iostream>
 #define TORBELLINO
 #define WIND
@@ -22,7 +25,7 @@
 
 ParticleSystem::ParticleSystem(physx::PxScene* scene, physx::PxPhysics* p)
 {
-	std::cout << "\nSIMULACION FISICA P6" << std::endl;
+	std::cout << "\nBOLOS :D" << std::endl;
 	seeControls();
 	//reg fuerzas
 	pfRegistry = new ParticleForceRegistry();
@@ -38,9 +41,15 @@ ParticleSystem::ParticleSystem(physx::PxScene* scene, physx::PxPhysics* p)
 	//partículas ejemplo sin velocidad inicial, masas diferentes (ejemplo de explosión)
 		//generateTestStaticParticles();
 	//escena de solido rigido-> generadores de sólido rígido
-		generateSolidScene();
+		//generateSolidScene();
 	//fuerzas que actuarán sobre la escena
 		generateFG();
+	//Bolos :D
+	createGameFloor();
+
+	//RigidBody* r1 = new RigidBody(gScene, gPhysics, Vector4(0, 200, 0, 0), 4, physx::PxTransform(Vector3(0, 10, 0)), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, 0.15, BOX);
+	
+	
 }
 
 ParticleSystem::~ParticleSystem()
@@ -129,6 +138,7 @@ void ParticleSystem::generateFG() //de tiempo infinito, aplicadas a todas las pa
 		GravityForceGenerator* g = new GravityForceGenerator(Vector3(0, -9.8, 0));
 		force_generators.push_back(g);
 		addSingleForceGeneratorToAll(g);
+		g->activate(); ////esto por ahora, dejarlo bien -----------------------------------------
 	#endif
 	#ifdef WIND
 		ParticleDragGenerator* dr = new ParticleDragGenerator(0.5, 0, Vector3(0, 0, 0), Vector3(350, 350, 350), Vector3(20, 0, 0));
@@ -236,6 +246,11 @@ void ParticleSystem::createBriefWind()
 void ParticleSystem::createFloor()
 {
 	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 0, 0)),  0, false,  BOX, Vector3(100, 0.1, 100));
+	modelParticles.push_back(suelo);
+}
+void ParticleSystem::createGameFloor()
+{
+	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 0, -50)), 0, false, BOX, Vector3(50, 0.1, 200));
 	modelParticles.push_back(suelo);
 }
 void ParticleSystem::generatespringDemo()

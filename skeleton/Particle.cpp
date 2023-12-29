@@ -7,7 +7,7 @@ Particle::Particle(Vector3 Pos, itemShape s)
 	ac = Vector3(0, 0, 0); 
 	damping = 0.998f;
 	pose = physx::PxTransform(Pos);
-	addShape(shapeType, 0.2);
+	addShape(s, 0.2);
 	color = Vector4(120, 050, 060, 1);
 	renderItem = new RenderItem(shape, &pose, color);
 	lifeTime =remainingTime = 10;

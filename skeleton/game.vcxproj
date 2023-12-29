@@ -254,12 +254,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnchoredSpringFG.cpp" />
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BallManager.cpp" />
+    <ClCompile Include="Bolo.cpp" />
+    <ClCompile Include="BoloManager.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="ElasticSpringFG.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Firework.cpp" />
     <ClCompile Include="FireworkGenerator.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -281,6 +286,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnchoredSpringFG.h" />
+    <ClInclude Include="Ball.h" />
+    <ClInclude Include="BallManager.h" />
+    <ClInclude Include="Bolo.h" />
+    <ClInclude Include="BoloManager.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="Constants.h" />
@@ -290,6 +299,7 @@
     <ClInclude Include="Firework.h" />
     <ClInclude Include="FireworkGenerator.h" />
     <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GaussianParticleGenerator.h" />
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Object.h" />

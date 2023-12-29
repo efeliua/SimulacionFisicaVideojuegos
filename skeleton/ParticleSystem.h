@@ -41,5 +41,8 @@ public:
 	void seeControls();
 	void createBriefWind();
 	void createFloor();
+	void createGameFloor();
+	inline void addToSystem(std::list<Object*> list) { for (auto e : list) { particles.push_back(e);} addForceGenerators(list); }
+	inline void addToSystem(Object* o) { particles.push_back(o); std::list<Object*> aux; aux.push_back(o); addForceGenerators(aux); };
 };
 

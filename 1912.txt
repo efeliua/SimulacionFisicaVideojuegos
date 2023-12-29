@@ -1,0 +1,104 @@
+1912
+eda hablando sobre exámenes
+Enero 22
+
+no es seguro pero lo normal es que el examen tenga una pinta parecida a los últimos tres años. Tres ejercicios tipo juez. Se hacen en un juez distinto accesible en los labs. Enlace en los que vienen los enunciados de los ejs, ficheros de entrada/Salida y plantillas. (Los casos de prueba del enunciado).
+Los punto .h solo los da si hay que hacer alguna modificacion interna. 
+El juez del examen es algo distinto. Es un mecanismo de entrega. Un correcto no significa casi nada, sólo prueba con los casos que tiene que salir. ._.
+En el examen no se corrige como en el juez. Solo se consideraban correctos como buenos. Aquí corregirá como estan hechos.  \(._.)/
+
+~(-.-)~ oOoOooooOººoO
+
+desde dentro de la clase manejar nodos, asignar punteros (muy habitual) 50% de posibilidades de caer o_O . Ejercicio repetir elementos de una cola!!! Ejericio típico e importante. El que hicimos en el juez  fue el del examen de junio. 
+tema 5 TT
+
+Aplicacion d tads. 
+
+poda de backgtracking 0,25 puntos? girl.
+Hay que practicar mucho!!!!!!!!!!!!!!! 
+
+
+Intentar  hacer el ej 1 de enero 22 de backtracking (complicau). Es un ej de backtracking en el que me dicen tienes que pagar una q de dinero y dispones de una serie de monedas (1 cent 2, 2 cents 4, 5 cents 1, ..). Problema de optimizacion-> encontrar la forma de desprenderme de cuantas mas monedas posibles. (,-,) No rallarse con el algoritmo. Parecido a la mochila auqneu no exactamente. PAstear el codigo de backtracking. Hay 2 formas de dibujar el arbol. Interesa decir primer nivel: cuantas monedas de un cent. segundo nivel cuantas monedas de dos cents. No poda ? Es importante describir la tupla solución !!!! Para como lo esta haciendo el decide que en el nivel 0 hay x monedas de tal tipo. [X0, X1, ..., X7] Xi es el número de monedas elegidas del tipo i. 
+
+Los problemas mochila es cuando no hay for, es un caso si/no
+Hay una variante de mochila es un tercer caso. lo parecido del de las monedas con mochila es sin mas que se considera no coger
+
+0
+0 1                2 ..
+[0,0] [0,1]  0:[1,0 1:[1,1 
+
+
+ej clasico de arbol binario -> búsqueda del tesoro ._.
+el de arbol al jefe le parecen ejercicios faciles-> posibles de escribir en 15 mins .-.
+bueno 
+
+Junio 22
+ej de evaluacion de esta semana - backtracking
+me dicen que hay unas tareas y que hay unos alumnos y se tienen que encargar de ellas. A cada alumno le gusta mas una tarea que otra. Hay que encontrar la asignacion optima tarea-alumno y se maxice la valoracion global. Cada tarea es para hacer entre dos alumnos. Pueden quedarse alumnos sin hacerlas. Un alumno puede como máximo dos tareas. Asignaciones:
+[0,3,02,2,3,4]
+la tarea 0 la hacen los alumnos 0, 3
+la tarea 1 los hacen los alumnos 0,2
+la tarea 2 los hacen los alumnos 3,4 
+
+(hay alumnos que hacen +1 tarea,el 1 pj no hace nada). 
+
+"Es como si hubiera 6 tareas/puestos"
+
+cuanto vale esta asignacion? 9+ 20+ 13 = 42
+
+esto tiene pinta de ser dificil lol. tenemos dos versiones de este ejercico. La del examen y la del evaluable. En la primera no se pide poda. En la segunda si hay que podar 3.18. Es la leche la diferencia entre podar y no podar. Sin poda tarda bastante en ejecutarse todo. (5-10mins maX) Y con la poda casi instantaneo. 
+
+El ultimo ej es un divide y venceras . 
+
+Tipos de problemas
+-problema dYv (de tipo logaritmico (binaria) o de tipo mergesort (no hemos hecho casi ninguno es mas dificil que caiga aunque puede caer)
+-problema backtracking
+-problema en el que se usa una lista (pila o cola) desde fuera.
+-manipulacion de nodos y enlaces (operacion interna a 
+-problema típico de árboles
+-operación interna en treeset o treemap (menos habitual alguna vez ha caido, "podria ser", hay que entder como funcionan por dentri )
+-problema de aplicaciom de tads cortitos (ex. hacer un listado de palabras con reps ex)
+-problema tipico de ap de tads (lo que hemos visto)
+-combinaciones (arboles+tads, backtracking+tads, ---) (improbable pero puede pasar) dado un arbol binario tiene s que completar los caminos a no se que y luego imprimirlps segun no se que (no los tenemos) (si fuera seria facil)
+quiero que me imprimas todas las soluciones posuibles alfabeticamenye-> añadir a un mapa
+-preguntas cortas de tipo teórico. 
+
+va a subir una clase grabada de hace dos años. casi dos horas. esta bien explicado, actualizado. Explicado el ej de concierto parecido al de valoraciones que acaba de explicar, y explicacion de como hacer una poda chula parecida. y luego el ej de supermercado. tmb viene explicado el de casanova cintas -> buen problema tipico mochila. y en este mismo video viene al final la explicacion de problemas que posiblemente pueden caer/tipo examen (la lista que he copiado arriba)- 
+
+seguimos con el examen creo? junio 21? 
+importante leer si es una función externa o interna!!!!
+ej 1 se puede hacer con dos iteradores y haciendo erase/insert
+problema de listas, puedes ir recorriendolos meterlos en una pila y sacarlos. 
+aunque mejor hacer con cuidado un insert en la pos que toque. 
+
+
+ejercicop 2 un dyv que debeis hacer
+
+y luego los exmanes anteriores hay preguntas que no hemos dado. pero se pueden preguntar ese tipo de preguntas teóricas. explica como se calcula el recorrido inorden de un arbol. d, b , a ,  calcula el coste asimetrico .Dado un codigo indica su conste. tiene pinta de que es for de la derecha cuadratico. a+2+3+4+5+6+..
+coste 3. cuadratico porque el at en las listas es lineal. no va a pedir recurrencia teprica. 
+5. lista el conjunto minimo de operacomes de arbol binario de busqueda-> gen insercopn, eliminacion, busqueda, ---  ("es una pregunta un poco rara, no sabemos en que contexto apareció). 
+
+
+
+
+
+void backtracking(std::vector<char>& sol, int k, int n, int m) //std::vector<bool>& usadas
+{
+    for (char c = 'a';c<('a'+m);c++) //recorro todas las letras con las que puedo comenzar el subconjunto (m primeras)
+    {
+        sol[k] = c; //guardo la primera letra del subconjunto
+       // if (!usadas[c - 'a']) // si no he sido usado ya 
+        {
+            if (k == n - 1)//si estoy completo imprimo solución 
+            {
+                for (char e:sol) std::cout << e;
+                std::cout<<std::endl;
+            }
+            else {
+                //usadas[c - 'a'] = true;
+                backtracking(sol, k + 1, n, m);//usadas
+               // usadas[c - 'a'] = false; //Esto es necesario porque puede no estar completa la solucion y repetirse la secuencia?
+            }
+        }
+    }
+}
