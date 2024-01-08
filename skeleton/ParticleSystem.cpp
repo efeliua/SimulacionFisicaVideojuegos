@@ -26,7 +26,7 @@
 ParticleSystem::ParticleSystem(physx::PxScene* scene, physx::PxPhysics* p)
 {
 	std::cout << "\nBOLOS :D" << std::endl;
-	seeControls();
+	//seeControls();
 	//reg fuerzas
 	pfRegistry = new ParticleForceRegistry();
 	//escena de physx
@@ -126,9 +126,23 @@ void ParticleSystem::addMass() //para escena flotación
 		std::cout << "The pink box new mass is " << changeMassP->getMass() << std::endl;
 	}
 }
+void ParticleSystem::addSingleForceGeneratorToSome(ForceGenerator* f, std::list<Object*> p)
+{
+	for (auto it = p.begin(); it != p.end(); ++it)
+	{
+		pfRegistry->addRegistry(f, *it);
+	}
+}
 void ParticleSystem::shoot() //(fireworks)
 {
 	std::list<Object*> ps =fireGen->generateParticles();
+	particles.splice(particles.end(), ps);
+}
+void ParticleSystem::shoot(int n)
+{
+	std::list<Object*> ps = fireGen2->generateParticles();
+	particles.splice(particles.end(), ps);
+	ps = fireGen2->generateParticles();
 	particles.splice(particles.end(), ps);
 }
 void ParticleSystem::generateFG() //de tiempo infinito, aplicadas a todas las particulas que vayan a existir
@@ -151,7 +165,10 @@ void ParticleSystem::generateFG() //de tiempo infinito, aplicadas a todas las pa
 		addSingleForceGeneratorToAll(w);
 	#endif
 
-	fireGen = new FireworkGenerator(); //único generador de fireworks por sistema
+	
+		fireGen = new FireworkGenerator({ 0,-10,0 }); //único generador de fireworks por sistema
+		fireGen2= new FireworkGenerator({-50,-5,-20}); //único generador de fireworks por sistema
+		fireGen3 = new FireworkGenerator({ {50,-5,-20} }); //único generador de fireworks por sistema
 }
 void ParticleSystem::generateGS()
 {
@@ -204,9 +221,9 @@ void ParticleSystem::addForceGenerators(std::list <Object*> p )
 		++it; 
 	}
 }
-void ParticleSystem::explode() //new explosion forcegenerator
+void ParticleSystem::explode(Vector3 pos) //new explosion forcegenerator
 {
-	Explosion* e = new Explosion(2, Vector3(0, 0, 0), 10000, 10000, 1);
+	Explosion* e = new Explosion(2, pos, 10000, 10000, 1);
 	force_generators.push_back(e);
 	addSingleForceGeneratorToAll(e);
 }
@@ -236,6 +253,21 @@ void ParticleSystem::seeControls()
 
 	std::cout<<std::endl;
 }
+void ParticleSystem::explode(Vector3 pos, std::list<Object*> p)
+{
+	Explosion* e = new Explosion(1, pos, 100, 10000, 1);
+	force_generators.push_back(e);
+	addSingleForceGeneratorToSome(e, p);
+}
+void ParticleSystem::addMuelle(Object* a, Object* b)
+{
+	ElasticSpringFG* f4 = new ElasticSpringFG(20, 1, 10, b);
+	pfRegistry->addRegistry(f4, a);
+	ElasticSpringFG* f5 = new ElasticSpringFG(20, 1, 10, a);
+	pfRegistry->addRegistry(f5, b);
+	force_generators.push_back(f4);
+	force_generators.push_back(f5);
+}
 void ParticleSystem::createBriefWind()
 {
 	ParticleDragGenerator* dr = new ParticleDragGenerator(0.5, 0, Vector3(0, 0, 0), Vector3(350, 350, 350), Vector3(20, 0, 0), 6);
@@ -243,6 +275,21 @@ void ParticleSystem::createBriefWind()
 	force_generators.push_back(dr);
 	addSingleForceGeneratorToAll(dr);
 }
+
+void ParticleSystem::createBriefWind(Vector3 pos, std::list<Object*> p)
+{
+	ParticleDragGenerator* dr = new ParticleDragGenerator(1, 0, pos, Vector3(100, 20, 450), Vector3(20, 0, 0), 6);
+	dr->activate();
+	force_generators.push_back(dr);
+	addSingleForceGeneratorToSome(dr, p);
+}
+
+void ParticleSystem::createInfoPanel()
+{
+	infoPanel = new RigidBody(gScene, gPhysics, Vector4(1, 1,1, 1), 0, physx::PxTransform(Vector3(0, 0, -10)), 0, false, BOX, Vector3(175,500, 25));
+	modelParticles.push_back(infoPanel);
+}
+
 void ParticleSystem::createFloor()
 {
 	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 0, 0)),  0, false,  BOX, Vector3(100, 0.1, 100));
@@ -250,9 +297,34 @@ void ParticleSystem::createFloor()
 }
 void ParticleSystem::createGameFloor()
 {
-	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 0, -50)), 0, false, BOX, Vector3(50, 0.1, 200));
+	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 0, -25)), 0, false, BOX, Vector3(50, 0.1, 200));
 	modelParticles.push_back(suelo);
+	
+	RigidBody* paredIz = new RigidBody(gScene, gPhysics, Vector4(0.8, 3, 0.2, 1), 0, physx::PxTransform(Vector3(-100, 0, -450)), 0, false, BOX, Vector3(25, 300, 25));
+	RigidBody* paredDch = new RigidBody(gScene, gPhysics, Vector4(0.8, 3, 0.2, 1), 0, physx::PxTransform(Vector3(100, 0, -450)), 0, false, BOX, Vector3(25, 300, 25));
+	modelParticles.push_back(paredIz);
+	modelParticles.push_back(paredDch);
+
+	RigidBody* top = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 75, -450)), 0, false, BOX, Vector3(175, 150, 25));
+	
+
+	//modelos ejemplo para los generadores (el último valor de estos constructor es la masa)
+	Particle* p = new Particle(Vector4(0, 200, 0, 0), 0.3, Vector3(-90, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
+	Particle* p2 = new Particle(Vector4(020, 040, 350, 708), 0.3, Vector3(90, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
+	Particle* p3 = new Particle(Vector4(0.4, 0.8, 3, 1), 0.5, Vector3(-120, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
+	Particle* p4 = new Particle(Vector4(0.4, 0.8, 3, 1), 0.5, Vector3(120, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
+	modelParticles.push_back(p);
+	modelParticles.push_back(p2);
+	modelParticles.push_back(p3);
+	modelParticles.push_back(p4);
+	//generadores de partículas (decoracion)
+	particles_generators.push_back(new GaussianParticleGenerator("fuente", p, 50, 4, Vector3(0.3, 0.3, 0.3), Vector3(1, 0.5, 0.5), 0.3));
+	particles_generators.push_back(new GaussianParticleGenerator("fuente", p2, 50, 4, Vector3(0.3, 0.3, 0.3), Vector3(1, 0.5, 0.5), 0.3));
+	particles_generators.push_back(new UniformParticleGenerator("uniforme", p3, 50, 3, Vector3(40, 10, 10), Vector3(5, 5, 5)));
+	particles_generators.push_back(new UniformParticleGenerator("uniforme", p4, 50, 3, Vector3(40, 10, 10), Vector3(5, 5, 5)));
+
 }
+
 void ParticleSystem::generatespringDemo()
 {
 	//tienen una vida limitada de 60

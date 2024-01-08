@@ -13,8 +13,21 @@
 #include "Game.h"
 #include <iostream>
 
-std::string display_text = "PRACTICA5 5: SÓLIDO RÍGIDO";
+std::string display_text = "BOLOS :D";
 std::string points_text = "POINTS: ";
+std::string balls_text= "BALLS LEFT: ";
+std::string level_text="LEVEL ";
+std::string high_text = "HIGHSCORE: ";
+std::string info_text;
+std::string info_text2; 
+std::string info_text3;
+std::string info_text4;
+std::string info_text5;
+std::string info_text6;
+std::string info_text7;
+std::string info_text8;
+
+
 
 using namespace physx;
 
@@ -38,6 +51,10 @@ ParticleSystem* psys;
 
 //juego 
 Game* game;
+int points;
+int ballsLeft;
+int level;
+int highscore;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -65,6 +82,7 @@ void initPhysics(bool interactive)
 	//crear si se quieren ver cosas
 	//psys = new ParticleSystem(gScene, gPhysics);
 	game = new Game(gScene, gPhysics);
+	points = 0;
 
 	}
 

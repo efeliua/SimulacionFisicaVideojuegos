@@ -48,6 +48,22 @@
 #include <string>
 
 extern std::string display_text;
+extern std::string points_text;
+extern int points;
+extern int ballsLeft;
+extern std::string balls_text;
+extern int level;
+extern std::string level_text;
+extern std::string info_text;
+extern int highscore;
+extern std::string high_text;
+extern std::string info_text2;
+extern std::string info_text3;
+extern std::string info_text4;
+extern std::string info_text5;
+extern std::string info_text6;
+extern std::string info_text7;
+extern std::string info_text8;
 
 namespace Snippets
 {

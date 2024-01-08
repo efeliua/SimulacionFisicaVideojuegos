@@ -2,10 +2,10 @@
 #include "BoloManager.h"
 #include <iostream>
 //bolo default
-Bolo::Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, physx::PxTransform Pos,int Size)
+Bolo::Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys,float Size, physx::PxTransform Pos, bool Model)
 {
 	boloMngr = b;
-	model = false;
+	model = Model;
 	size = Size;
 	//render
 	color = Vector4{ 0.2,0.3,0.4,1 };
@@ -28,9 +28,11 @@ Bolo::Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, physx:
 	RigidBody::addShape(BOX, 0, recSize);
 	new_solid->attachShape(*shape);
 	
-	renderItem = new RenderItem(shape, new_solid, color);
-	
-	gScene->addActor(*new_solid);
+	if (!model)
+	{
+		renderItem = new RenderItem(shape, new_solid, color);
+		gScene->addActor(*new_solid);
+	}
 	rigidB = new_solid;
 	rigidBstatic = nullptr;
 
@@ -39,7 +41,7 @@ Bolo::Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, physx:
 
 }
 
-Bolo::Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Color, float Size, physx::PxTransform Pos, float timeLife, bool Model)
+Bolo::Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Color, float Size, physx::PxTransform Pos, bool Model, float timeLife)
 {
 	boloMngr = b;
 	model = Model;
@@ -70,8 +72,8 @@ Bolo::Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector
 	new_solid->attachShape(*shape);
 	if (!model) {
 		renderItem = new RenderItem(shape, new_solid, color);
+		gScene->addActor(*new_solid);
 	}
-	gScene->addActor(*new_solid);
 	rigidB = new_solid;
 	rigidBstatic = nullptr;
 

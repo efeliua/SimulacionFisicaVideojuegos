@@ -23,14 +23,13 @@ RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Colo
 	new_solid->setLinearVelocity(LinearVel);
 	new_solid->setAngularVelocity(AngularVel);
 	new_solid->setLinearDamping(Dam);
-	
 
 	addShape(s, size, boxSize);
 	new_solid->attachShape(*shape);
 	if (!model) {
 		renderItem = new RenderItem(shape, new_solid, color);
+		gScene->addActor(*new_solid);
 	}
-	gScene->addActor(*new_solid);
 	physx::PxRigidBodyExt::updateMassAndInertia(*new_solid, Density);
 	rigidB = new_solid;
 	rigidBstatic = nullptr;
@@ -118,4 +117,15 @@ void RigidBody::addShape(itemShape s, float size, Vector3 boxSize)
 		shape = CreateShape(box); break;
 	}
 	
+}
+
+void RigidBody::rotateXAxis(float degToRot)
+{
+	float radToRot = degToRot * (3.141592653589793/ 180);
+	auto auxtr = rigidB->getGlobalPose();
+	float q0 = cos(radToRot / 2);
+	float qx = sin(radToRot / 2);
+	auxtr.q = physx::PxQuat(0,qx , 0,q0) * auxtr.q;
+	rigidB->setGlobalPose(auxtr);
+	//physx::PxQuat(radToRot, physx::PxVec3(0, 1, 0));
 }

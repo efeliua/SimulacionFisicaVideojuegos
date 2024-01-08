@@ -1,13 +1,20 @@
 #pragma once
 #include "RigidBody.h"
+#include <iostream>
 class BoloManager;
 class Bolo: public RigidBody
 {
 	public:
-		Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, physx::PxTransform Pos, int size);
-		Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color, float size, physx::PxTransform Pos, float timeLife = 10, bool model = false);
+		Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, float size, physx::PxTransform Pos, bool model=false);
+		Bolo(BoloManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color, float size, physx::PxTransform Pos,  bool model = false, float timeLife = 10);
 		virtual inline bool insideBounds(){ Vector3 pose = rigidB->getGlobalPose().p; return (pose.x > constants::limIzBo && pose.x<constants::limDcBo&& pose.y>constants::limInBo && pose.y<constants::limSBo&& pose.z>constants::limCBo && pose.z < constants::limLBo); };
+		virtual Bolo* clone(){ return new Bolo(boloMngr, gScene, gPhysics, color, size, rigidB->getGlobalPose(), false, lifeTime); }
 		virtual ~Bolo();
+		void die() {remainingTime = 0; }
+		void virtual integrate(double t) {
+			/*std::cout << rigidB->getGlobalPose().q.getAngle()
+			<< std::endl;*/
+		}; //no lifetime
 
 protected:
 	BoloManager* boloMngr;
