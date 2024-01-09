@@ -11,11 +11,10 @@ class Bolo: public RigidBody
 		virtual Bolo* clone(){ return new Bolo(boloMngr, gScene, gPhysics, color, size, rigidB->getGlobalPose(), false, lifeTime); }
 		virtual ~Bolo();
 		void die() {remainingTime = 0; }
-		void virtual integrate(double t) {
-			/*std::cout << rigidB->getGlobalPose().q.getAngle()
-			<< std::endl;*/
-		}; //no lifetime
-
+		void virtual integrate(double t) {}; //no lifetime
+		bool muelle;
+		inline bool isMuelle() { return muelle; }
+		inline bool setMuelle() { muelle = true; }
 protected:
 	BoloManager* boloMngr;
 };

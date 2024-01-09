@@ -268,6 +268,21 @@ void ParticleSystem::addMuelle(Object* a, Object* b)
 	force_generators.push_back(f4);
 	force_generators.push_back(f5);
 }
+void ParticleSystem::deleteMuelle(Object* a)
+{
+	for (auto p : connected)
+	{
+		if (a == p.first)
+		{
+			//delete spring force (a) 
+			break;
+		}
+		else if (a == p.second)
+		{
+			break;
+		}
+	}
+}
 void ParticleSystem::createBriefWind()
 {
 	ParticleDragGenerator* dr = new ParticleDragGenerator(0.5, 0, Vector3(0, 0, 0), Vector3(350, 350, 350), Vector3(20, 0, 0), 6);

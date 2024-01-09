@@ -21,6 +21,7 @@ public:
 	virtual inline Vector3 getVel()=0;
 	virtual inline float getMass()=0;
 	virtual inline void addMass(float m) {}
+	virtual inline physx::PxShape* getShape() { return shape; }
 	virtual inline float getInvMass() = 0;
 	virtual std::list<Object*> onDeath()=0;
 	virtual inline void setPos(Vector3 v) {}

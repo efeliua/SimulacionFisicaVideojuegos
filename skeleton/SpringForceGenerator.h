@@ -9,6 +9,7 @@ public:
 	inline void setK(double k) { _k = k; }
 	inline void addK(double k) { _k += k; }
 	inline float getK() { return _k; }
+	inline Object* getOther() { return _other; }
 protected:
 	double _k; //elastic coeff-> constante elástica del muelle (cuánto se deformará ig)
 	double _resting_length; //cuando no está deformado, length original (no llega a stainearse nunca en principio)

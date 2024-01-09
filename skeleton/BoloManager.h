@@ -12,7 +12,7 @@ protected:
 	Game* g;
 	std::set<Bolo*> bolosScene;
 	std::vector<std::set<Bolo*>>bolosByLevel; 
-	std::vector<std::vector<Bolo*>>bolosByLevelConnected;
+	std::vector<int>bolosByLevelConnected;
 	physx::PxScene* gScene;
 	physx::PxPhysics* gPhysics;
 	bool playing;

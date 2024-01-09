@@ -21,6 +21,8 @@ protected:
 	physx::PxPhysics* gPhysics;
 	RigidBody* infoPanel;
 
+	std::vector<std::pair <Object*, Object*>> connected;
+
 public:
 	ParticleSystem(physx::PxScene*, physx::PxPhysics*);
 	~ParticleSystem();
@@ -40,6 +42,7 @@ public:
 	void explode(Vector3 pos= Vector3(0, 0, 0));
 	void explode(Vector3 pos, std::list <Object*> p);
 	void addMuelle(Object* a, Object* b);
+	void deleteMuelle(Object* a);
 
 	void shootProjectile(type t);
 	void generatespringDemo();
@@ -55,5 +58,6 @@ public:
 	void destroyInfoPanel() { delete(infoPanel); infoPanel = nullptr; }
 	inline void addToSystem(std::list<Object*> list) { for (auto e : list) { particles.push_back(e);} addForceGenerators(list); }
 	inline void addToSystem(Object* o) { particles.push_back(o); std::list<Object*> aux; aux.push_back(o); addForceGenerators(aux); };
+	
 };
 
