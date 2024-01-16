@@ -16,6 +16,7 @@ public:
 	inline void addRegistry(ForceGenerator* fg, Object* p) { FRPair fp = { p,fg }; insert(fp); } //inserta sin orden
 	void deleteParticleRegistry(Object* p) { this->erase(p); } 
 	void deleteForceRegistry(ForceGenerator* f);
+	void deletePair(Object* o, ForceGenerator* f);
 
 };
 

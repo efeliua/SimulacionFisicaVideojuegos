@@ -22,5 +22,5 @@ namespace constants
 	const float limLBo = 1000;
 
 	//niveles
-	const int LEVELS = 3;
+	const int LEVELS = 4;
 }

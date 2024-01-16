@@ -34,7 +34,7 @@ RigidBody::RigidBody(physx::PxScene* scene, physx::PxPhysics* phys, Vector4 Colo
 	rigidB = new_solid;
 	rigidBstatic = nullptr;
 	
-	std::cout << rigidB->getMass() << std::endl;
+	if(!model)std::cout <<"Mass: "<< rigidB->getMass() << std::endl;
 	//tiempo de vida
 	remainingTime = lifeTime = timeLife;
 }
@@ -119,13 +119,3 @@ void RigidBody::addShape(itemShape s, float size, Vector3 boxSize)
 	
 }
 
-void RigidBody::rotateXAxis(float degToRot)
-{
-	float radToRot = degToRot * (3.141592653589793/ 180);
-	auto auxtr = rigidB->getGlobalPose();
-	float q0 = cos(radToRot / 2);
-	float qx = sin(radToRot / 2);
-	auxtr.q = physx::PxQuat(0,qx , 0,q0) * auxtr.q;
-	rigidB->setGlobalPose(auxtr);
-	//physx::PxQuat(radToRot, physx::PxVec3(0, 1, 0));
-}

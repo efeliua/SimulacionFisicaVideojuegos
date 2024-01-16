@@ -13,11 +13,8 @@ class Ball: public RigidBody
 		inline void setState(ballState s) { state = s; }
 		virtual void integrate(double t);
 		inline virtual Ball* clone() { return new Ball(ballMngr, gScene, gPhysics, color, size, rigidB->getGlobalPose(), rigidB->getLinearVelocity(), Vector3{0,0,0}, lifeTime, false, density); };
-			//------------------------------get mass?
+		
 	protected:
 		BallManager* ballMngr; //para poderle avisar cuando haya muerto
 		ballState state;
-		float rotation; //variable for a quick access to ball rotation (before shoot)
-};
-
-//rigidB->getGlobalPose().q.normalize() 
+}; 

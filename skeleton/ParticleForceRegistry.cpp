@@ -16,3 +16,19 @@ void ParticleForceRegistry::deleteForceRegistry(ForceGenerator* f)
 		}
 	}
 }
+
+void ParticleForceRegistry::deletePair(Object* o, ForceGenerator* f)
+{
+	for (auto it = begin(); it != end();)
+	{
+		if (it->first==o&&it->second == f)
+		{
+			it = erase(it); ///te devuelve el sig
+			break;
+		}
+		else
+		{
+			++it;
+		}
+	}
+}

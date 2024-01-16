@@ -23,7 +23,7 @@ public:
 	virtual inline float getRecVolume() { Vector3 rec = rigidB->getWorldBounds().getDimensions(); return rec.x * rec.y * rec.z; }
 	virtual inline void addForce(const Vector3& force) { if (rigidB != NULL) rigidB->addForce(force); };
 	virtual void addShape(itemShape s, float size, Vector3 boxSize = Vector3{ 0,0,0 });
-	void rotateXAxis(float degToRot);
+	
 protected:
 	physx::PxRigidDynamic* rigidB;
 	physx::PxRigidStatic* rigidBstatic; 

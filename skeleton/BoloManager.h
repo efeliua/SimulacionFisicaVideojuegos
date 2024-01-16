@@ -11,15 +11,15 @@ protected:
 	ParticleSystem* psys;
 	Game* g;
 	std::set<Bolo*> bolosScene;
-	std::vector<std::set<Bolo*>>bolosByLevel; 
-	std::vector<int>bolosByLevelConnected;
+	std::vector<std::set<Bolo*>>bolosByLevel; //vector/mapa de bolos que tiene los bolos a generar por nivel 
 	physx::PxScene* gScene;
 	physx::PxPhysics* gPhysics;
 	bool playing;
-	//vector/mapa de bolos que tenga los bolos a generar por nivel 
+	
 public:
 
 	BoloManager(Game* g, ParticleSystem* p, physx::PxScene* gScene, physx::PxPhysics* gPhysics);
+	~BoloManager();
 	void onBoloDeath(Bolo* b);
 	void explode(Vector3 pos);
 	void loadLevel(int n);

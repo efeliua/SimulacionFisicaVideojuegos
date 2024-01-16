@@ -20,7 +20,7 @@ Game::Game(physx::PxScene* scene, physx::PxPhysics* p)
 	highscore = 0;
 	fillInfo();
 
-	timeToDie = 10; //5 segundos de margen para saber si se ha muerto
+	timeToDie = 5; //5 segundos de margen para saber si se ha muerto
 	currentTime = 0; //tiempo desde que pierde la ultima pelota
 }
 
@@ -40,7 +40,7 @@ void Game::keyPressed(unsigned char key)
 		fillInfo();
 		level = 0;
 		boloMngr->clearScene(); if (points > highscore) { highscore = points; }
-		points = 0; currState = START;
+		points = 0; currState = START; win = false;
 	}
 	else
 	{
@@ -48,8 +48,11 @@ void Game::keyPressed(unsigned char key)
 		{
 		case ' ':
 		{
-			int balls=ballMngr->shoot();
-			if (balls == 0)currState = WAITG;
+			if (currState != WAITG)
+			{
+				int balls = ballMngr->shoot();
+				if (balls == 0)currState = WAITG;
+			}
 			break;
 		}
 		case 'K':
@@ -69,11 +72,11 @@ void Game::keyPressed(unsigned char key)
 		}
 		case 'V':
 		{
-			briefwind();
+			briefwind(Vector3(-200, 0, 0));
 			break;
 		}
 		case 'B':
-			ballMngr->rotateMainBall(10);
+			briefwind(Vector3(200, 0, 0));
 			break;
 		default:
 			break;
@@ -124,18 +127,20 @@ void Game::endOfLevel()
 
 void Game::explode()
 {
-	if (points >= 10)
+	if (points >= 20)
 	{
+		std::cout << "EXPLOSION" << std::endl;
 		boloMngr->explode(ballMngr->getMainBallPos());
-		points -= 10;
+		points -= 20;
 	}
 }
 
-void Game::briefwind()
+void Game::briefwind(Vector3 d)
 {
 	if (points >= 5)
 	{
-		ballMngr->briefwind();
+		std::cout << "BRIEF WIND" << std::endl;
+		ballMngr->briefwind(d);
 		points -= 5;
 	}
 }
@@ -145,13 +150,14 @@ void Game::endOfGame()
 	totalTries++;
 	if (win)
 	{
-		info_text = "YOU WON! \n Press any key to go again. ";
-		psys->shoot(2);
+		info_text = "YOU WON! :D";
+		info_text2 = "Press any key to go again. ";
 		psys->shoot();
 	}
 	else
 	{
-		info_text = "YOU LOST :C. \n Press any key to try again!";
+		info_text = "YOU LOST :C";
+		info_text2 = "Press any key to go again. ";
 	}
 }
 
@@ -159,9 +165,9 @@ void Game::fillInfo()
 {
 	info_text = "WELCOME TO BOLOS :D";
 	info_text2 = " ";
-	info_text3 = "PRESS THE SPACE BAR TO SHOOT THE BALL";
-	info_text4 = "THERE ARE 3 TYPES OF BALLS BY MASS";
-	info_text5 = "BRIEF WIND FOR YOUR BALL 2S: 5 points";
-	info_text6 = "MAKE A BIG EXPLOSION: 30 points";
+	info_text3 = "THERE ARE 3 TYPES OF BALLS BY MASS";
+	info_text4 = "SHOOT THE BALL: SPACEBAR";
+	info_text5 = "WIND FOR YOUR BALL (5 points): V(left), B(right)";
+	info_text6 = "MAKE A BIG EXPLOSION  (20 points): E";
 	info_text8 = "PRESS ANY KEY TO START";
 }

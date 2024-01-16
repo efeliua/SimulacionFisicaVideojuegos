@@ -2,7 +2,7 @@
 #include <iostream>
 #include "BallManager.h"
 
-Ball::Ball( BallManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color,physx::PxTransform tr,  bool Model,float Density):RigidBody(scene, phys,color,2, tr, {0,0,0}, {0,0,0},10, Model,Density)
+Ball::Ball( BallManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector4 color,physx::PxTransform tr,  bool Model,float Density):RigidBody(scene, phys,color,2, tr, {0,0,0}, {0,0,0},8, Model,Density)
 {
 	ballMngr = b;
 	state = MOVEBALL; 
@@ -14,7 +14,6 @@ Ball::Ball(BallManager* b, physx::PxScene* scene, physx::PxPhysics* phys, Vector
 	ballMngr = b;
 	state = MOVEBALL;
 	density = Density;
-
 }
 
 Ball::~Ball()
@@ -24,6 +23,6 @@ Ball::~Ball()
 }
 void Ball::integrate(double t)
 {
-	//disminuye tiempo por vivir
+	//disminuye tiempo por vivir solo si ya está en movimiento
 	if(state!=MOVEBALL)remainingTime -= t;
 }

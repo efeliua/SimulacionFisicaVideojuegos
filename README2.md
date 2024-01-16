@@ -1,19 +1,16 @@
-#SimulaciónFísica
-PRÁCTICA 5: SÓLIDO RÍGIDO
+#SimulaciónFísica: Proyecto Final
 
----nuevas implementaciones/cambios generales:
-CLASE OBJECT/RIGIDBODY:
-En esta práctica he creado una clase padre Object de Particle con todos los métodos que se usan en generadores de partículas o fuerzas virtuales. Así Particle y el nuevo hijo de Object, RigidBody, podrán incorporarse a un mismo sistema con unas fuerzas compartidas. Para que no se duplique la fuerza de la gravedad sobre los sólidos rigidos, en el main la he setteado a 0. Así el usuario puede seguir activándola y desactivándola como anteriormente. 
+El  juego consiste en unos bolos con efectos especiales. El jugador acumulará puntos derribando bolos, y los usará para hacer uso de poderes que facilitarán el alcance de más bolos. Hay 4 niveles (0-3) y una vez ganado (o perdido) podrá volver a jugar para alcanzar una puntuación más alta. 
 
-RigidBody tiene los métodos de particle actualizados con cómo se obtienen/modifican los datos de un sólido rígido. 
+TECLAS:
+K: mover pelota hacia la izquierda
+L: mover pelota hacia la derecha 
 
-Todos los archivos que incluyen la palabra particle en el ahora funcionan para cualquier objeto de clase Object.  ParticleSystem realmente sería ahora ObjectSystem. 
+E: generar una explosión en el punto en que se encuentra la pelota  (x puntos)
+V: generar una ráfaga de viento hacia la izquierda (x puntos)
+B: generar una ráfaga de viento hacia la derecha (x puntos)
 
-GENERATORS:
-He cambiado el ParticleGenerator para que si se le pasa un máximo de partículas no se generen más que las indicadas (_maxTotalParticles) para que no se generen demasiados objetos de tipo SolidRigid.
-
----escena/activar fuerzas:
-Todas las fuerzas como generadores funcionan sobre tanto RigidBody como Particle. Presionando la i en ejecución el usuario verá en consola que comandos usar para activar las diferentes fuerzas. Fireworks sigue generando únicamente partículas. Se puede comprobar que funcionan correctamente las partículas descomentando las escenas de los muelles o los generadores de partículas.
+La pelota tiene un tiempo de vida de 8 segundos una vez tirada, esperar si se queda atascada. De la misma manera, hay un tiempo de espera (5s) una vez se muere la última bola si aún quedan bolos en escena para dar tiempo a que los bolos terminen de desplazarse. Los bolos azules son los bolos-muelle (elásticos), interconectados entre sí. Cuando uno de estos muere, se pierde la fuerza del muelle que los conecta. 
 
 
 

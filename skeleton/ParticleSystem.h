@@ -6,6 +6,11 @@
 #include "Projectile.h"
 #include "PxPhysicsAPI.h"
 #include "RigidBody.h"
+struct MuellePair
+{
+	std::pair <Object*, Object* > pair;
+	std::pair<FRPair, FRPair> fgpairs;
+};
 class ParticleSystem
 {
 protected:
@@ -20,8 +25,7 @@ protected:
 	physx::PxScene* gScene;
 	physx::PxPhysics* gPhysics;
 	RigidBody* infoPanel;
-
-	std::vector<std::pair <Object*, Object*>> connected;
+	std::vector<MuellePair> connected;
 
 public:
 	ParticleSystem(physx::PxScene*, physx::PxPhysics*);
@@ -51,9 +55,9 @@ public:
 	void activateFG(std::string name);
 	void seeControls();
 	void createBriefWind();
-	void createBriefWind(Vector3 pos, std::list <Object*> p);
+	void createBriefWind(Vector3 pos, std::list <Object*> p, Vector3 dir);
 	void createFloor();
-	void createGameFloor();
+	void createGameScene();
 	void createInfoPanel();
 	void destroyInfoPanel() { delete(infoPanel); infoPanel = nullptr; }
 	inline void addToSystem(std::list<Object*> list) { for (auto e : list) { particles.push_back(e);} addForceGenerators(list); }

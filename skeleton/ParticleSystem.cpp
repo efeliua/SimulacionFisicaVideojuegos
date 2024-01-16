@@ -45,7 +45,7 @@ ParticleSystem::ParticleSystem(physx::PxScene* scene, physx::PxPhysics* p)
 	//fuerzas que actuarán sobre la escena
 		generateFG();
 	//Bolos :D
-	createGameFloor();
+	createGameScene();
 
 	//RigidBody* r1 = new RigidBody(gScene, gPhysics, Vector4(0, 200, 0, 0), 4, physx::PxTransform(Vector3(0, 10, 0)), Vector3(0, 0, 0), Vector3(0, 0, 0), 60, false, 0.15, BOX);
 	
@@ -255,30 +255,39 @@ void ParticleSystem::seeControls()
 }
 void ParticleSystem::explode(Vector3 pos, std::list<Object*> p)
 {
-	Explosion* e = new Explosion(1, pos, 100, 10000, 1);
+	Explosion* e = new Explosion(1, pos, 30, 50000, 1);
 	force_generators.push_back(e);
 	addSingleForceGeneratorToSome(e, p);
 }
 void ParticleSystem::addMuelle(Object* a, Object* b)
 {
-	ElasticSpringFG* f4 = new ElasticSpringFG(20, 1, 10, b);
+	ElasticSpringFG* f4 = new ElasticSpringFG(200, 5, 10, b);
 	pfRegistry->addRegistry(f4, a);
-	ElasticSpringFG* f5 = new ElasticSpringFG(20, 1, 10, a);
+	ElasticSpringFG* f5 = new ElasticSpringFG(200, 5, 10, a);
 	pfRegistry->addRegistry(f5, b);
 	force_generators.push_back(f4);
 	force_generators.push_back(f5);
+	std::pair<Object*, Object*> obs = { a, b };
+	FRPair aP = { a, f4 };
+	FRPair bP = { b, f5 };
+	std::pair<FRPair, FRPair> frpairs = { aP, bP };
+	MuellePair mp = { obs, frpairs };
+	connected.push_back(mp);
 }
 void ParticleSystem::deleteMuelle(Object* a)
 {
 	for (auto p : connected)
 	{
-		if (a == p.first)
+		if (a == p.pair.first)
 		{
-			//delete spring force (a) 
+			//delete spring force (b) 
+			pfRegistry->deletePair(p.fgpairs.second.first, p.fgpairs.second.second);
 			break;
 		}
-		else if (a == p.second)
+		else if (a == p.pair.second)
 		{
+			//delete spring force (a)
+			pfRegistry->deletePair(p.fgpairs.first.first, p.fgpairs.first.second);
 			break;
 		}
 	}
@@ -291,9 +300,9 @@ void ParticleSystem::createBriefWind()
 	addSingleForceGeneratorToAll(dr);
 }
 
-void ParticleSystem::createBriefWind(Vector3 pos, std::list<Object*> p)
+void ParticleSystem::createBriefWind(Vector3 pos, std::list<Object*> p, Vector3 dir)
 {
-	ParticleDragGenerator* dr = new ParticleDragGenerator(1, 0, pos, Vector3(100, 20, 450), Vector3(20, 0, 0), 6);
+	ParticleDragGenerator* dr = new ParticleDragGenerator(0.9, 0, pos, Vector3(200, 40, 350),dir, 1);
 	dr->activate();
 	force_generators.push_back(dr);
 	addSingleForceGeneratorToSome(dr, p);
@@ -301,8 +310,7 @@ void ParticleSystem::createBriefWind(Vector3 pos, std::list<Object*> p)
 
 void ParticleSystem::createInfoPanel()
 {
-	infoPanel = new RigidBody(gScene, gPhysics, Vector4(1, 1,1, 1), 0, physx::PxTransform(Vector3(0, 0, -10)), 0, false, BOX, Vector3(175,500, 25));
-	modelParticles.push_back(infoPanel);
+	infoPanel = new RigidBody(gScene, gPhysics, Vector4(0, 0,0, 1), 0, physx::PxTransform(Vector3(0, 0, -10)), 0, false, BOX, Vector3(175,500, 25));
 }
 
 void ParticleSystem::createFloor()
@@ -310,9 +318,9 @@ void ParticleSystem::createFloor()
 	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 0, 0)),  0, false,  BOX, Vector3(100, 0.1, 100));
 	modelParticles.push_back(suelo);
 }
-void ParticleSystem::createGameFloor()
+void ParticleSystem::createGameScene() 
 {
-	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.8, 0.8, 0.8, 1), 0, physx::PxTransform(Vector3(0, 0, -25)), 0, false, BOX, Vector3(50, 0.1, 200));
+	RigidBody* suelo = new RigidBody(gScene, gPhysics, Vector4(0.2,0.1,0.2,1), 0, physx::PxTransform(Vector3(0, 0, -25)), 0, false, BOX, Vector3(50, 0.1, 200));
 	modelParticles.push_back(suelo);
 	
 	RigidBody* paredIz = new RigidBody(gScene, gPhysics, Vector4(0.8, 3, 0.2, 1), 0, physx::PxTransform(Vector3(-100, 0, -450)), 0, false, BOX, Vector3(25, 300, 25));
@@ -324,8 +332,8 @@ void ParticleSystem::createGameFloor()
 	
 
 	//modelos ejemplo para los generadores (el último valor de estos constructor es la masa)
-	Particle* p = new Particle(Vector4(0, 200, 0, 0), 0.3, Vector3(-90, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
-	Particle* p2 = new Particle(Vector4(020, 040, 350, 708), 0.3, Vector3(90, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
+	Particle* p = new Particle(Vector4(1, 1,0,0), 0.3, Vector3(-90, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 0.8, BOX);
+	Particle* p2 = new Particle(Vector4(1, 1, 0, 0), 0.3, Vector3(90, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 0.8, BOX);
 	Particle* p3 = new Particle(Vector4(0.4, 0.8, 3, 1), 0.5, Vector3(-120, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
 	Particle* p4 = new Particle(Vector4(0.4, 0.8, 3, 1), 0.5, Vector3(120, 150, -450), Vector3(0, 30, 0), Vector3(0, 0, 0), 60, true, true, 1);
 	modelParticles.push_back(p);

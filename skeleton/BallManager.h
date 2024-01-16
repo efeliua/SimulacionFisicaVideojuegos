@@ -16,6 +16,7 @@ protected:
 	physx::PxScene* gScene;
 	physx::PxPhysics* gPhysics;
 	std::vector<int> ballsPerLevel;
+	bool playing;
 public:
 
 	BallManager(ParticleSystem* p,physx::PxScene* gScene, physx::PxPhysics* gPhysics);
@@ -23,10 +24,9 @@ public:
 	void onBallDeath();
 	int shoot();
 	void loadlevel(int n);
-	void rotateMainBall(float angles) { mainBall->rotateXAxis(angles); }
-	Vector3 getMainBallPos() { return mainBall->getPos(); }
-	bool noBallsLeft() { return mainBall == nullptr; }
-	void briefwind();
+	inline Vector3 getMainBallPos() { return mainBall->getPos(); }
+	inline bool noBallsLeft() { return mainBall == nullptr; }
+	void briefwind(Vector3 d);
 	inline void moveBall(int dirx, int diry) { if (state==MOVEBALL) { mainBall->setPos(mainBall->getPos()+Vector3(dirx,diry,0)); } }
 };
 

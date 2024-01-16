@@ -25,10 +25,7 @@
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="AnchoredSpringFG.cpp" />
     <ClCompile Include="BuoyancyForceGenerator.cpp" />
-    <ClCompile Include="ParticleBungee.cpp" />
     <ClCompile Include="ElasticSpringFG.cpp" />
-    <ClCompile Include="RigidSolidSystem.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Bolo.cpp" />
     <ClCompile Include="BallManager.cpp" />
@@ -64,9 +61,7 @@
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="AnchoredSpringFG.h" />
     <ClInclude Include="BuoyancyForceGenerator.h" />
-    <ClInclude Include="ParticleBungee.h" />
     <ClInclude Include="ElasticSpringFG.h" />
-    <ClInclude Include="RigidSolidSystem.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Bolo.h" />

@@ -79,8 +79,11 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	//crear si se quieren ver cosas
-	//psys = new ParticleSystem(gScene, gPhysics);
+
+	//para simulaciones de practicas anteriores 
+	//psys = new ParticleSystem(gScene, gPhysics); 
+
+	//JUEGO- BOLOS
 	game = new Game(gScene, gPhysics);
 	points = 0;
 
@@ -105,7 +108,8 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-	//delete(psys);
+	if (game == nullptr)delete(psys);
+	else delete(game);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -178,7 +182,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 				break;
 		}
 	}
-	else
+	else //input de game
 	{
 		game->keyPressed(key);
 	}

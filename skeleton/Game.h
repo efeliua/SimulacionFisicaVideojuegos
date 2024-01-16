@@ -23,7 +23,7 @@ protected:
 	int round;
 	BallManager* ballMngr;
 	BoloManager* boloMngr;
-	ParticleSystem* psys; //lo creo o lo recibo? supongo que lo creo
+	ParticleSystem* psys; 
 	gameState currState;
 	physx::PxScene* gScene;
 	physx::PxPhysics* gPhysics;
@@ -32,13 +32,13 @@ protected:
 	float timeToDie, currentTime;
 public:
 	Game(physx::PxScene* scene, physx::PxPhysics* p);
-	~Game() { delete (psys); };
+	~Game() { ballsLeft = 0;   delete (psys); delete(ballMngr); delete(boloMngr); };
 	void keyPressed(unsigned char key);
 	void update(double t);
 	void loadLevel(int n);
 	void endOfLevel();
 	void explode();
-	void briefwind();
+	void briefwind(Vector3 d);
 	inline void addPoints(int p) { points += p; }
 	inline int getPoints(){ return points; }
 	void endOfGame();

@@ -285,24 +285,24 @@ void setupDefaultRenderState()
 void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNear, PxReal clipFar)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glDisable(GL_LIGHTING);
 	// Display text
 	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
 	drawText(display_text, 20, 490);
 	drawText(points_text+std::to_string(points), 400, 470);
 	drawText(level_text+std::to_string(level), 235, 440);
 	drawText(balls_text+std::to_string(ballsLeft), 20, 20);
-	drawText(info_text,90, 235);
-	drawText(info_text2, 90, 220);
-	drawText(info_text3, 90, 205);
-	drawText(info_text4, 90, 190);
-	drawText(info_text5, 90, 175);
-	drawText(info_text6, 90, 160);
-	drawText(info_text7, 90, 145);
-	drawText(info_text8, 90, 130);
+	drawText(info_text,100, 235);
+	drawText(info_text2, 70, 220);
+	drawText(info_text3, 70, 205);
+	drawText(info_text4, 70, 190);
+	drawText(info_text5, 70, 175);
+	drawText(info_text6, 70, 160);
+	drawText(info_text7, 70, 145);
+	drawText(info_text8, 70, 130);
 
 	drawText(high_text + std::to_string(highscore), 390, 450);
-
+	glEnable(GL_LIGHTING);
 
 	// Setup camera
 	glMatrixMode(GL_PROJECTION);
